@@ -13,4 +13,8 @@
         completions."
     </string>
     <string name="title_activity_main">My study groups</string>
+    <string name="title_activity_bottom_navigation">Study group finder</string>
+    <string name="title_home">My study groups</string>
+    <string name="title_search">Search</string>
+    <string name="title_profile">Profile</string>
 </resources>
