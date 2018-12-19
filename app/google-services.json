@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "898981271512",
+    "firebase_url": "https://aau-study-group.firebaseio.com",
+    "project_id": "aau-study-group",
+    "storage_bucket": "aau-study-group.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:898981271512:android:1902e63bc0060ec6",
+        "android_client_info": {
+          "package_name": "at.risingr.studygroup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "898981271512-3vascbmefm785mg6s7oc43offota6ovc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPePir5vHnng0wXHAPqQuelh4mnMb9lxE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,32 +3,35 @@ package at.risingr.studygroup;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
-
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +41,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, View.OnClickListener {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -52,16 +55,174 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
+    private final static String TAG = "Login";
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
-
+    private UserLoginTask mAuthTask = null; // TODO delete afterwards
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    // firebase
+    private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
+
+    public void onStart() {
+        super.onStart();
+        // check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        redirectToMainActivity(currentUser);
+    }
+
+    private void updateUI() {
+        View mFeedbackView = findViewById(R.id.textViewFeedback);
+        mFeedbackView.setVisibility(View.VISIBLE);
+    }
+
+    private void redirectToMainActivity(FirebaseUser currentUser) {
+        if (currentUser != null) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.button_sign_in) {
+            signIn(mEmailView.getText().toString(), mPasswordView.getText().toString());
+        } else if (i == R.id.button_register) {
+            createAccount(mEmailView.getText().toString(), mPasswordView.getText().toString());
+        } else if (i == R.id.button_forgot_password) {
+            if (TextUtils.isEmpty(mEmailView.getText().toString())) {
+                mEmailView.setError("e-Mail must not be empty.");
+            } else if (!mEmailView.getText().toString().contains("@")) {
+                mEmailView.setError("e-Mail format is invalid.");
+            } else {
+                sendPasswordResetEmail(mEmailView.getText().toString());
+            }
+        }
+    }
+
+    private void createAccount(String email, String password) {
+
+        Log.d(TAG, "create account: " + email);
+
+        if (!validateForm()) {
+            return;
+        }
+
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    // sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "create account: success");
+                    Toast.makeText(LoginActivity.this, "Authentication (registration) successful.", Toast.LENGTH_SHORT).show();
+                    // send verification email
+                    sendEmailVerification();
+                    updateUI();
+                    // add new user entry
+                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                    String uid = firebaseUser.getUid();
+                    String email = firebaseUser.getEmail();
+                    mDatabase = FirebaseDatabase.getInstance().getReference();
+                    mDatabase.child("users").child(uid).child("email").setValue(email);
+                } else {
+                    // if sign in fails, display message to the user
+                    Log.w(TAG, "create account: failure", task.getException());
+                    Toast.makeText(LoginActivity.this, "Authentication (registration) failed.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void signIn(String email, String password) {
+
+        Log.d(TAG, "sign in: " + email);
+
+        if (!validateForm()) {
+            return;
+        }
+
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "sign in: success");
+                    Toast.makeText(LoginActivity.this, "Authentication (sign in) successful.", Toast.LENGTH_SHORT).show();
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    redirectToMainActivity(user);
+                } else {
+                    // if sign in fails, display message to user
+                    Log.w(TAG, "sign in: failure", task.getException());
+                    Toast.makeText(LoginActivity.this, "Authentication (sign in) failed.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void sendEmailVerification() {
+        final FirebaseUser user = mAuth.getCurrentUser();
+        user.sendEmailVerification().addOnCompleteListener(this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "send email: success");
+                    Toast.makeText(LoginActivity.this, "Verification email sent to: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.e(TAG, "send email: failure", task.getException());
+                    Toast.makeText(LoginActivity.this, "Failed to send verification email.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    // TODO create corresponding view
+    private void sendPasswordResetEmail(String email) {
+        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "send password reset: success");
+                    Toast.makeText(LoginActivity.this, "Password reset sent.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.w(TAG, "send password reset: failure", task.getException());
+                    Toast.makeText(LoginActivity.this, "Failed to send password reset email.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+    private boolean validateForm() {
+        boolean valid = true;
+
+        String email = mEmailView.getText().toString();
+        if (TextUtils.isEmpty(email)) {
+            mEmailView.setError("e-Mail must not be empty.");
+            valid = false;
+        }
+
+        if (!email.contains("@")) {
+            mEmailView.setError("e-Mail format is invalid.");
+            valid = false;
+        }
+
+        String password = mPasswordView.getText().toString();
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError("Password must not be empty.");
+            valid = false;
+        }
+
+        if (password.length() < 8) {
+            mPasswordView.setError("Password must be at least 8 characters long.");
+            valid = false;
+        }
+
+        return valid;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,32 +230,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
+        // populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
+//        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+//                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+//                    attemptLogin();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
         // TODO SIR: insert dummy credentials in email and password views
         String[] credentials = DUMMY_CREDENTIALS[0].split(":");
         mEmailView.setText(credentials[0]);
-        mPasswordView.setText(credentials[1]);
+        mPasswordView.setText(credentials[1] + "salty");
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+        // initialize firebase auth
+        mAuth = FirebaseAuth.getInstance();
+
+        // set on click listeners
+        findViewById(R.id.button_sign_in).setOnClickListener(this);
+        findViewById(R.id.button_forgot_password).setOnClickListener(this);
+        findViewById(R.id.button_register).setOnClickListener(this);
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -314,13 +475,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mEmail)) {
@@ -341,7 +495,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 // finish();
                 // TODO SIR: switch to main activity
-                Intent intent = new Intent(LoginActivity.this, BottomNavigationActivity.class);
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
 
             } else {
