@@ -10,7 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class MainActivity extends AppCompatActivity {
+
+    private boolean eMailVerified;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -22,10 +27,14 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    fragment = new HomeFragment();
+                    if (eMailVerified) {
+                        fragment = new HomeFragment();
+                    }
                     break;
                 case R.id.navigation_search:
-                    fragment = new SearchFragment();
+                    if (eMailVerified) {
+                        fragment = new SearchFragment();
+                    }
                     break;
                 case R.id.navigation_profile:
                     fragment = new ProfileFragment();
@@ -45,8 +54,18 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        // check if user email is verified
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        eMailVerified = user.isEmailVerified();
+
         // load default content fragment
-        loadFragment(new HomeFragment());
+        if (eMailVerified) {
+            loadFragment(new HomeFragment());
+        } else {
+            loadFragment(new ProfileFragment());
+            navigation.setSelectedItemId(R.id.navigation_profile);
+        }
 
         // set on clock listener for floating action button to create new study groups
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
