@@ -58,10 +58,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         userEmail.setText("Email: " + email);
         TextView userEmailVerification = (TextView) getView().findViewById(R.id.info_email_verification);
         if (eMailVerified) {
-            userEmailVerification.setText("*verified*");
+            userEmailVerification.setText("verified");
             userEmailVerification.setTextColor(getResources().getColor(R.color.colorAccent, null));
         } else {
-            userEmailVerification.setText("*NOT verified*");
+            userEmailVerification.setText("NOT verified");
             userEmailVerification.setTextColor(getResources().getColor(R.color.colorError, null));
             TextView userDoEmailVerification = (TextView) getView().findViewById(R.id.info_do_email_verification);
             userDoEmailVerification.setText("Please verify your email to use Study Group Manager.");

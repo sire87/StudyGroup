@@ -73,13 +73,26 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <TextView
+                android:id="@+id/info_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:paddingTop="20dp"
+                android:text="Feedback"
+                android:textColor="@color/colorError"
+                android:textSize="16sp"
+                android:visibility="gone" />
+
             <Button
                 android:id="@+id/button_sign_in"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:backgroundTint="@color/colorAccent"
                 android:text="@string/action_sign_in"
+                android:textColor="@color/colorWhite"
                 android:textStyle="bold" />
 
             <Button
@@ -88,7 +101,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:backgroundTint="@color/colorPrimary"
                 android:text="@string/action_register"
+                android:textColor="@color/colorWhite"
                 android:textStyle="bold" />
 
             <Button
@@ -97,20 +112,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:backgroundTint="@color/colorPrimaryDark"
                 android:text="@string/action_reset_password"
+                android:textColor="@color/colorWhite"
                 android:textStyle="bold" />
 
 
         </LinearLayout>
     </ScrollView>
 
-    <TextView
-        android:id="@+id/textViewFeedback"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="20dp"
-        android:text="@string/email_verification_feedback"
-        android:textSize="16sp"
-        android:visibility="invisible" />
 </LinearLayout>

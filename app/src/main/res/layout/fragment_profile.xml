@@ -86,7 +86,7 @@
         android:layout_marginEnd="8dp"
         android:backgroundTint="@color/colorPrimaryDark"
         android:text="@string/sign_out"
-        android:textColor="@color/common_google_signin_btn_text_dark_pressed"
+        android:textColor="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_view" />
 

@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -65,6 +66,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private TextView mFeedbackView;
     // firebase
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -77,7 +79,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void updateUI() {
-        View mFeedbackView = findViewById(R.id.textViewFeedback);
+        View mFeedbackView = findViewById(R.id.info_feedback);
         mFeedbackView.setVisibility(View.VISIBLE);
     }
 
@@ -133,6 +135,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     // if sign in fails, display message to the user
                     Log.w(TAG, "create account: failure", task.getException());
                     Toast.makeText(LoginActivity.this, "Authentication (registration) failed.", Toast.LENGTH_SHORT).show();
+                    mFeedbackView.setText(task.getException().getMessage());
+                    mFeedbackView.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -158,6 +162,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     // if sign in fails, display message to user
                     Log.w(TAG, "sign in: failure", task.getException());
                     Toast.makeText(LoginActivity.this, "Authentication (sign in) failed.", Toast.LENGTH_SHORT).show();
+                    mFeedbackView.setText(task.getException().getMessage());
+                    mFeedbackView.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -174,6 +180,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 } else {
                     Log.e(TAG, "send email: failure", task.getException());
                     Toast.makeText(LoginActivity.this, "Failed to send verification email.", Toast.LENGTH_SHORT).show();
+                    mFeedbackView.setText(task.getException().getMessage());
+                    mFeedbackView.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -190,6 +198,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 } else {
                     Log.w(TAG, "send password reset: failure", task.getException());
                     Toast.makeText(LoginActivity.this, "Failed to send password reset email.", Toast.LENGTH_SHORT).show();
+                    mFeedbackView.setText(task.getException().getMessage());
+                    mFeedbackView.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -200,24 +210,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         boolean valid = true;
 
         String email = mEmailView.getText().toString();
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError("e-Mail must not be empty.");
-            valid = false;
-        }
+        String password = mPasswordView.getText().toString();
+
 
         if (!email.contains("@")) {
             mEmailView.setError("e-Mail format is invalid.");
             valid = false;
         }
 
-        String password = mPasswordView.getText().toString();
-        if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError("Password must not be empty.");
+        if (TextUtils.isEmpty(email)) {
+            mEmailView.setError("e-Mail must not be empty.");
             valid = false;
         }
 
         if (password.length() < 8) {
             mPasswordView.setError("Password must be at least 8 characters long.");
+            valid = false;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError("Password must not be empty.");
             valid = false;
         }
 
@@ -228,6 +240,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        mFeedbackView = (TextView) findViewById(R.id.info_feedback);
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         // populateAutoComplete();
