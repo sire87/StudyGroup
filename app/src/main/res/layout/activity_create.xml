@@ -250,6 +250,8 @@
                             android:layout_weight="1"
                             android:ems="6"
                             android:hint="Date from"
+                            android:clickable="true"
+                            android:focusable="false"
                             android:inputType="date" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -270,6 +272,8 @@
                             android:layout_weight="1"
                             android:ems="6"
                             android:hint="Date to"
+                            android:clickable="true"
+                            android:focusable="false"
                             android:inputType="date" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -300,6 +304,8 @@
                             android:layout_weight="1"
                             android:ems="6"
                             android:hint="Time from"
+                            android:clickable="true"
+                            android:focusable="false"
                             android:inputType="time" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -334,6 +340,8 @@
                             android:layout_weight="1"
                             android:ems="6"
                             android:hint="Time to"
+                            android:clickable="true"
+                            android:focusable="false"
                             android:inputType="time" />
                     </android.support.design.widget.TextInputLayout>
                 </android.support.constraint.ConstraintLayout>
