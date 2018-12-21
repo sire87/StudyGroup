@@ -107,8 +107,6 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
             finish();
         } else if (i == R.id.btn_create) {
             createStudyGroup();
-            Toast.makeText(this, "Study Group created.", Toast.LENGTH_SHORT).show();
-            finish();
         }
     }
 
@@ -178,21 +176,26 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
         String location = editLocation.getText().toString();
         String locationDetail = editLocationDetail.getText().toString();
 
-        // user related
+        // create participant (i.e. creator)
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         String uid = user.getUid();
         int knowledge = ((SeekBar) findViewById(R.id.seek_bar_knowledge)).getProgress();
         String comment = editComment.getText().toString();
+        Participant creator = new Participant(uid, comment, knowledge, true);
 
-        // insert into database
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        // create study group
         StudyGroup grp = new StudyGroup(groupName, groupDetails, participantsMax, dateFrom, dateTo,
-                timeFrom, timeTo, location, locationDetail);
+                timeFrom, timeTo, location, locationDetail, creator);
+
+        // insert study group into database
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         DatabaseReference grpRef = mDatabase.child("groups").push();
         grpRef.setValue(grp);
-        grpRef.child("participants").child(uid).child("knowledge").setValue(knowledge);
-        grpRef.child("participants").child(uid).child("comment").setValue(comment);
+
+        // give feedback to user and close activity
+        Toast.makeText(this, "Study Group created.", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     private boolean validateForm() {
@@ -202,7 +205,8 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
         if (TextUtils.isEmpty(editGroupName.getText())) {
             valid = false;
             editGroupName.setError("Group name must not be empty.");
-        } else if (TextUtils.isEmpty(editLocation.getText())) {
+        }
+        if (TextUtils.isEmpty(editLocation.getText())) {
             editLocation.setError("Location must not be empty.");
             valid = false;
         }
