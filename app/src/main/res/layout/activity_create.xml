@@ -66,7 +66,7 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/prompt_group_name"
                             android:inputType="textPersonName"
-                            android:maxLength="32"
+                            android:maxLength="64"
                             android:maxLines="1"
                             tools:layout_editor_absoluteX="8dp"
                             tools:layout_editor_absoluteY="8dp" />
@@ -110,7 +110,7 @@
                             android:hint="@string/prompt_group_topic"
                             android:inputType="textMultiLine"
                             android:maxLength="512"
-                            android:maxLines="3"
+                            android:maxLines="4"
                             tools:layout_editor_absoluteX="16dp"
                             tools:layout_editor_absoluteY="357dp" />
                     </android.support.design.widget.TextInputLayout>
@@ -171,9 +171,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:clickable="false"
                             android:ems="8"
+                            android:focusable="false"
                             android:hint="Max. participants"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:maxLength="2"
+                            android:maxLines="1" />
                     </android.support.design.widget.TextInputLayout>
 
                     <Button
@@ -381,8 +385,6 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="8dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/image_location"
                         app:layout_constraintTop_toTopOf="parent">
@@ -392,9 +394,32 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:clickable="true"
                             android:ems="10"
+                            android:focusable="false"
                             android:hint="Location"
-                            android:inputType="textPostalAddress" />
+                            android:inputType="textMultiLine|textPostalAddress" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/text_input_location_detail"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/image_location"
+                        app:layout_constraintTop_toBottomOf="@+id/text_input_location">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/edit_location_detail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Location detail (optional)"
+                            android:lines="1"
+                            android:maxLength="32" />
                     </android.support.design.widget.TextInputLayout>
                 </android.support.constraint.ConstraintLayout>
             </android.support.v7.widget.CardView>
@@ -498,13 +523,15 @@
                             android:layout_weight="1"
                             android:ems="10"
                             android:hint="Comment (optional)"
-                            android:inputType="textPersonName" />
+                            android:inputType="textMultiLine"
+                            android:maxLength="256"
+                            android:maxLines="2" />
                     </android.support.design.widget.TextInputLayout>
                 </android.support.constraint.ConstraintLayout>
             </android.support.v7.widget.CardView>
 
             <Button
-                android:id="@+id/button_cancel"
+                android:id="@+id/btn_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -518,7 +545,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/card_view_knowledge" />
 
             <Button
-                android:id="@+id/button_create"
+                android:id="@+id/btn_create"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

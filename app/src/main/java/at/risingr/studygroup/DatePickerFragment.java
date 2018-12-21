@@ -40,5 +40,10 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
         String dateString = String.format(Locale.ENGLISH, "%d-%02d-%02d", year, month, dayOfMonth);
         this.editText.setText(dateString);
+
+        if (this.editText.getId() == R.id.edit_date_from) {
+            EditText editText2 = getActivity().findViewById(R.id.edit_date_to);
+            editText2.setText(dateString);
+        }
     }
 }

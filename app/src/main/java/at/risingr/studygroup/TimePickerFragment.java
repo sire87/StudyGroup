@@ -40,5 +40,10 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 
         String timeString = String.format(Locale.ENGLISH, "%02d:%02d", hourOfDay, minute);
         this.editText.setText(timeString);
+
+        if (this.editText.getId() == R.id.edit_time_from) {
+            EditText editText2 = getActivity().findViewById(R.id.edit_time_to);
+            editText2.setText(timeString);
+        }
     }
 }
