@@ -16,6 +16,10 @@ public class StudyGroup {
     private String locationDetail;
     private ArrayList<Participant> participants;
 
+    public StudyGroup() {
+        // needed for firebase
+    }
+
     public StudyGroup(String groupName, String groupDetails, int participantsMax, String dateFrom,
                       String dateTo, String timeFrom, String timeTo, String location,
                       String locationDetail, Participant creator) {

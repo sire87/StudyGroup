@@ -7,6 +7,10 @@ public class Participant {
     private int knowledge;
     private boolean isCreator;
 
+    public Participant() {
+        // needed for firebase
+    }
+
     public Participant(String uid, String comment, int knowledge, boolean isCreator) {
         this.uid = uid;
         this.comment = comment;
