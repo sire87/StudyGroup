@@ -2,7 +2,7 @@
     <item
         android:id="@+id/action_join_group"
         android:orderInCategory="200"
-        android:title="@string/card_txt_join" />
+        android:title="@string/card_btn_join" />
     <item
         android:id="@+id/action_show_details"
         android:orderInCategory="100"

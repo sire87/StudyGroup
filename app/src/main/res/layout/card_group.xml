@@ -3,19 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginEnd="8dp"
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view_item"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="8dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp">
 
             <TextView
                 android:id="@+id/txt_card_grp_name"
@@ -23,25 +22,212 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:text="@string/card_txt_group_name"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/txt_card_grp_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/card_txt_show_details"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@+id/img_card_grp_details"
+                app:layout_constraintTop_toBottomOf="@+id/img_card_grp_date" />
+
+            <TextView
+                android:id="@+id/txt_card_grp_participants"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/card_txt_participants"
+                app:layout_constraintStart_toEndOf="@+id/img_card_grp_participants"
+                app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_name" />
+
+            <TextView
+                android:id="@+id/txt_card_grp_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/card_txt_date"
+                app:layout_constraintStart_toEndOf="@+id/img_card_grp_date"
+                app:layout_constraintTop_toBottomOf="@+id/img_card_grp_participants" />
+
+            <TextView
+                android:id="@+id/txt_card_grp_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/card_txt_time"
+                app:layout_constraintStart_toEndOf="@+id/img_card_grp_time"
+                app:layout_constraintTop_toBottomOf="@+id/img_card_grp_participants" />
+
+            <TextView
+                android:id="@+id/txt_card_grp_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/card_txt_location"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@+id/img_card_grp_location"
+                app:layout_constraintTop_toBottomOf="@+id/img_card_grp_details" />
+
             <ImageView
-                android:id="@+id/overflow"
+                android:id="@+id/img_card_grp_menu"
                 android:layout_width="20dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_more_vert_black_24dp"
                 android:tint="@color/colorPrimaryDark"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/img_card_grp_participants"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:tint="@color/colorPrimaryDark"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_name"
+                app:srcCompat="@drawable/ic_people_black_24dp" />
+
+            <ImageView
+                android:id="@+id/img_card_grp_knowledge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:tint="@color/colorPrimaryDark"
+                app:layout_constraintEnd_toStartOf="@+id/img_card_grp_star1"
+                app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_name"
+                app:srcCompat="@drawable/ic_lightbulb_outline_black_24dp" />
+
+            <ImageView
+                android:id="@+id/img_card_grp_star1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:tint="@color/colorPrimary"
+                app:layout_constraintEnd_toStartOf="@+id/img_card_grp_star2"
+                app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_name"
+                app:srcCompat="@drawable/ic_star_black_24dp" />
+
+            <ImageView
+                android:id="@+id/img_card_grp_star2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:tint="@color/colorPrimary"
+                app:layout_constraintEnd_toStartOf="@+id/img_card_grp_star3"
+                app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_name"
+                app:srcCompat="@drawable/ic_star_black_24dp" />
+
+            <ImageView
+                android:id="@+id/img_card_grp_star3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:tint="@color/colorPrimary"
+                app:layout_constraintEnd_toStartOf="@+id/img_card_grp_star4"
+                app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_name"
+                app:srcCompat="@drawable/ic_star_black_24dp" />
+
+            <ImageView
+                android:id="@+id/img_card_grp_star4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:tint="@color/colorPrimary"
+                app:layout_constraintEnd_toStartOf="@+id/img_card_grp_star5"
+                app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_name"
+                app:srcCompat="@drawable/ic_star_half_black_24dp" />
+
+            <ImageView
+                android:id="@+id/img_card_grp_star5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:tint="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_name"
+                app:srcCompat="@drawable/ic_star_border_black_24dp" />
+
+            <ImageView
+                android:id="@+id/img_card_grp_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:tint="@color/colorPrimaryDark"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_card_grp_participants"
+                app:srcCompat="@drawable/ic_insert_invitation_black_24dp" />
+
+            <ImageView
+                android:id="@+id/img_card_grp_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:tint="@color/colorPrimaryDark"
+                app:layout_constraintStart_toEndOf="@+id/txt_card_grp_date"
+                app:layout_constraintTop_toBottomOf="@+id/img_card_grp_participants"
+                app:srcCompat="@drawable/ic_access_time_black_24dp" />
+
+            <ImageView
+                android:id="@+id/img_card_grp_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:tint="@color/colorPrimaryDark"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_card_grp_date"
+                app:srcCompat="@drawable/ic_description_black_24dp" />
+
+            <ImageView
+                android:id="@+id/img_card_grp_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:tint="@color/colorPrimaryDark"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_card_grp_details"
+                app:srcCompat="@drawable/ic_location_on_black_24dp" />
+
+            <Button
+                android:id="@+id/btn_card_grp_join"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@color/colorAccent"
+                android:text="@string/card_btn_join"
+                android:textColor="@color/colorWhite"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_location" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>

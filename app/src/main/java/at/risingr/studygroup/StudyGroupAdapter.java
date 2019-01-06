@@ -2,12 +2,14 @@ package at.risingr.studygroup;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -30,6 +32,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_group, parent, false);
+        itemView.setOnClickListener(new CardItemListener());
         return new MyViewHolder(itemView);
     }
 
@@ -49,7 +52,11 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
         PopupMenu popupMenu = new PopupMenu(mContext, view);
         MenuInflater inflater = popupMenu.getMenuInflater();
         inflater.inflate(R.menu.menu_group, popupMenu.getMenu());
-        popupMenu.setOnMenuItemClickListener(new MyMenuItemClickListener());
+
+        ViewParent viewParent = view.getParent();
+        View parentView = (View) viewParent;
+
+        popupMenu.setOnMenuItemClickListener(new MyMenuItemClickListener(parentView));
         popupMenu.show();
     }
 
@@ -65,24 +72,61 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
         public MyViewHolder(View view) {
             super(view);
             grpName = (TextView) view.findViewById(R.id.txt_card_grp_name);
-            overflow = (ImageView) view.findViewById(R.id.overflow);
+            overflow = (ImageView) view.findViewById(R.id.img_card_grp_menu);
+        }
+    }
+
+    class CardItemListener implements CardView.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            int visibilityStatus = view.findViewById(R.id.txt_card_grp_details).getVisibility();
+            if (visibilityStatus == View.GONE) {
+                view.findViewById(R.id.txt_card_grp_details).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.img_card_grp_details).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.txt_card_grp_location).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.img_card_grp_location).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.btn_card_grp_join).setVisibility(View.VISIBLE);
+            } else {
+                view.findViewById(R.id.txt_card_grp_details).setVisibility(View.GONE);
+                view.findViewById(R.id.img_card_grp_details).setVisibility(View.GONE);
+                view.findViewById(R.id.txt_card_grp_location).setVisibility(View.GONE);
+                view.findViewById(R.id.img_card_grp_location).setVisibility(View.GONE);
+                view.findViewById(R.id.btn_card_grp_join).setVisibility(View.GONE);
+            }
         }
     }
 
     class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
 
+        private View view;
 
-        public MyMenuItemClickListener() {
+        public MyMenuItemClickListener(View view) {
+            this.view = view;
         }
 
         @Override
         public boolean onMenuItemClick(MenuItem item) {
             switch (item.getItemId()) {
+
                 case R.id.action_show_details:
-                    Toast.makeText(mContext, "show details TODO", Toast.LENGTH_SHORT).show();
+                    int visibilityStatus = view.findViewById(R.id.txt_card_grp_details).getVisibility();
+                    if (visibilityStatus == View.GONE) {
+                        view.findViewById(R.id.txt_card_grp_details).setVisibility(View.VISIBLE);
+                        view.findViewById(R.id.img_card_grp_details).setVisibility(View.VISIBLE);
+                        view.findViewById(R.id.txt_card_grp_location).setVisibility(View.VISIBLE);
+                        view.findViewById(R.id.img_card_grp_location).setVisibility(View.VISIBLE);
+                        view.findViewById(R.id.btn_card_grp_join).setVisibility(View.VISIBLE);
+                    } else {
+                        view.findViewById(R.id.txt_card_grp_details).setVisibility(View.GONE);
+                        view.findViewById(R.id.img_card_grp_details).setVisibility(View.GONE);
+                        view.findViewById(R.id.txt_card_grp_location).setVisibility(View.GONE);
+                        view.findViewById(R.id.img_card_grp_location).setVisibility(View.GONE);
+                        view.findViewById(R.id.btn_card_grp_join).setVisibility(View.GONE);
+                    }
                     return true;
+
                 case R.id.action_join_group:
-                    Toast.makeText(mContext, "join group TODO", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "TODO: join group", Toast.LENGTH_SHORT).show();
                     return true;
             }
             return false;

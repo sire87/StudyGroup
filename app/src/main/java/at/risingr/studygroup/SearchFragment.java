@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -55,7 +54,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
                 for (DataSnapshot studyGroup : studyGroupsChildrenSnapshot) {
                     StudyGroup grp = studyGroup.getValue(StudyGroup.class);
-                    Toast.makeText(getContext(), grp.getGroupName(), Toast.LENGTH_SHORT).show();
                     studyGroupList.add(grp);
                 }
 

@@ -55,7 +55,11 @@
 
     <!-- Strings related to card view -->
     <string name="card_txt_group_name">Group name</string>
-    <string name="card_txt_show_details">Show details</string>
-    <string name="card_txt_join">Join study group</string>
+    <string name="card_txt_show_details">Details</string>
+    <string name="card_txt_participants">Participants</string>
+    <string name="card_txt_date">Date</string>
+    <string name="card_txt_time">Time</string>
+    <string name="card_txt_location">Location</string>
+    <string name="card_btn_join">Join</string>
 
 </resources>
