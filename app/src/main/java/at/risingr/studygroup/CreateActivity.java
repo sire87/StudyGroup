@@ -61,7 +61,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
         int minute = c.get(Calendar.MINUTE);
 
         // format current date and time strings
-        String dateString = String.format(Locale.ENGLISH, "%d-%02d-%02d", year, month, day);
+        String dateString = String.format(Locale.ENGLISH, "%d-%02d-%02d", year, month + 1, day);
         String timeStringFrom = String.format(Locale.ENGLISH, "%02d:%02d", hour, minute);
         String timeStringTo = String.format(Locale.ENGLISH, "%02d:%02d", hour + 1, minute);
 

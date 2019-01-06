@@ -17,7 +17,7 @@ public class StudyGroup {
     private ArrayList<Participant> participants;
 
     public StudyGroup() {
-        // needed for firebase
+        // don't delete(!): needed for firebase
     }
 
     public StudyGroup(String groupName, String groupDetails, int participantsMax, String dateFrom,

@@ -38,7 +38,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
-        String dateString = String.format(Locale.ENGLISH, "%d-%02d-%02d", year, month, dayOfMonth);
+        String dateString = String.format(Locale.ENGLISH, "%d-%02d-%02d", year, month + 1, dayOfMonth);
         this.editText.setText(dateString);
 
         if (this.editText.getId() == R.id.edit_date_from) {

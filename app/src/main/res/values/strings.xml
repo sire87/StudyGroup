@@ -60,6 +60,7 @@
     <string name="card_txt_date">Date</string>
     <string name="card_txt_time">Time</string>
     <string name="card_txt_location">Location</string>
-    <string name="card_btn_join">Join</string>
+    <string name="card_txt_location_details">Location details</string>
+    <string name="card_btn_join">Join group</string>
 
 </resources>
