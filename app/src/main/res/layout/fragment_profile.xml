@@ -9,7 +9,7 @@
 
     <!-- A CardView that contains a TextView -->
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card_view"
+        android:id="@+id/card_view_item"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -85,9 +85,9 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="@color/colorPrimaryDark"
-        android:text="@string/sign_out"
+        android:text="@string/profile_btn_sign_out"
         android:textColor="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/card_view" />
+        app:layout_constraintTop_toBottomOf="@+id/card_view_item" />
 
 </android.support.constraint.ConstraintLayout>

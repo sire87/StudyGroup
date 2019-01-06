@@ -43,6 +43,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
+                        android:contentDescription="@string/create_group_hint_group_name"
                         android:tint="@color/colorPrimaryDark"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -64,7 +65,7 @@
                             android:id="@+id/edit_group_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/prompt_group_name"
+                            android:hint="@string/create_group_hint_group_name"
                             android:inputType="textPersonName"
                             android:maxLength="64"
                             android:maxLines="1"
@@ -107,7 +108,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ems="12"
-                            android:hint="@string/prompt_group_topic"
+                            android:hint="@string/create_group_hint_group_details"
                             android:inputType="textMultiLine"
                             android:maxLength="512"
                             android:maxLines="4"
@@ -174,7 +175,7 @@
                             android:clickable="false"
                             android:ems="8"
                             android:focusable="false"
-                            android:hint="Max. participants"
+                            android:hint="@string/create_group_hint_participants_max"
                             android:inputType="number"
                             android:maxLength="2"
                             android:maxLines="1" />
@@ -189,7 +190,7 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
                         android:backgroundTint="@color/colorPrimary"
-                        android:text="+"
+                        android:text="@string/create_group_btn_participants_inc"
                         android:textColor="@color/colorWhite"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/btn_participants_decr"
@@ -204,7 +205,7 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
                         android:backgroundTint="@color/colorPrimaryDark"
-                        android:text="-"
+                        android:text="@string/create_group_btn_participants_dec"
                         android:textColor="@color/colorWhite"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -252,10 +253,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:ems="6"
-                            android:hint="Date from"
                             android:clickable="true"
+                            android:ems="6"
                             android:focusable="false"
+                            android:hint="@string/create_group_hint_date_from"
                             android:inputType="date" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -274,10 +275,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:ems="6"
-                            android:hint="Date to"
                             android:clickable="true"
+                            android:ems="6"
                             android:focusable="false"
+                            android:hint="@string/create_group_hint_date_to"
                             android:inputType="date" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -306,10 +307,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:ems="6"
-                            android:hint="Time from"
                             android:clickable="true"
+                            android:ems="6"
                             android:focusable="false"
+                            android:hint="@string/create_group_hint_time_from"
                             android:inputType="time" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -342,10 +343,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:ems="6"
-                            android:hint="Time to"
                             android:clickable="true"
+                            android:ems="6"
                             android:focusable="false"
+                            android:hint="@string/create_group_hint_time_to"
                             android:inputType="time" />
                     </android.support.design.widget.TextInputLayout>
                 </android.support.constraint.ConstraintLayout>
@@ -397,7 +398,7 @@
                             android:clickable="true"
                             android:ems="10"
                             android:focusable="false"
-                            android:hint="Location"
+                            android:hint="@string/create_group_hint_location"
                             android:inputType="textMultiLine|textPostalAddress" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -417,7 +418,7 @@
                             android:id="@+id/edit_location_detail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Location detail (optional)"
+                            android:hint="@string/create_group_hint_location_details"
                             android:lines="1"
                             android:maxLength="32" />
                     </android.support.design.widget.TextInputLayout>
@@ -456,7 +457,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:text="My Knowledge:"
+                        android:text="@string/create_group_txt_knowledge"
                         app:layout_constraintStart_toEndOf="@+id/image_knowledge"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -479,7 +480,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="little"
+                        android:text="@string/create_group_txt_knowledge_little"
                         app:layout_constraintStart_toStartOf="@+id/seek_bar_knowledge"
                         app:layout_constraintTop_toBottomOf="@+id/seek_bar_knowledge" />
 
@@ -488,7 +489,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        android:text="good"
+                        android:text="@string/create_group_txt_knowledge_good"
                         app:layout_constraintEnd_toEndOf="@+id/seek_bar_knowledge"
                         app:layout_constraintTop_toBottomOf="@+id/seek_bar_knowledge" />
 
@@ -522,7 +523,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
-                            android:hint="Comment (optional)"
+                            android:hint="@string/create_group_hint_comment"
                             android:inputType="textMultiLine"
                             android:maxLength="256"
                             android:maxLines="2" />
@@ -538,7 +539,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
                 android:backgroundTint="@color/colorPrimaryDark"
-                android:text="Cancel"
+                android:text="@string/create_group_btn_cancel"
                 android:textColor="@color/colorWhite"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -551,7 +552,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:backgroundTint="@color/colorAccent"
-                android:text="Create study group"
+                android:text="@string/create_group_btn_create"
                 android:textColor="@color/colorWhite"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/card_view_knowledge" />
