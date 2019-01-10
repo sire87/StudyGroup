@@ -74,7 +74,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                // TODO
             }
         });
     }
@@ -87,6 +87,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             String uid = p.getUid();
             if (uid.equals(mUID)) return false;
         }
+
+        // TODO check if date is still in the future
+
         return true;
     }
 

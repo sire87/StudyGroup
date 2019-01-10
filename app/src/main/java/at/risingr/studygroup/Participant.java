@@ -3,6 +3,7 @@ package at.risingr.studygroup;
 public class Participant {
 
     private String uid;
+    private String name;
     private String comment;
     private int knowledge;
     private boolean isCreator;
@@ -11,8 +12,9 @@ public class Participant {
         // needed for firebase
     }
 
-    public Participant(String uid, String comment, int knowledge, boolean isCreator) {
+    public Participant(String uid, String name, String comment, int knowledge, boolean isCreator) {
         this.uid = uid;
+        this.name = name;
         this.comment = comment;
         this.knowledge = knowledge;
         this.isCreator = isCreator;
@@ -28,6 +30,14 @@ public class Participant {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getComment() {

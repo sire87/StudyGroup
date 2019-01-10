@@ -73,7 +73,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                // TODO
             }
         });
 
@@ -87,6 +87,9 @@ public class HomeFragment extends Fragment {
             String uid = p.getUid();
             if (uid.equals(mUID)) return true;
         }
+
+        // TODO check if date is still in the future
+
         return false;
     }
 }

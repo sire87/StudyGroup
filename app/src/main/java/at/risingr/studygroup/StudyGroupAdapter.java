@@ -56,21 +56,65 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
             viewHolder.grpDate.setText(studyGroup.getDateFrom() + " -\n" + studyGroup.getDateTo());
         }
 
+        hideDetails(viewHolder);
         setStars(viewHolder, studyGroup);
+        setParticipantsDetails(viewHolder, studyGroup);
 
-        viewHolder.grpJoinBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, "TODO: join functionality", Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (isHome) {
+            viewHolder.grpJoinBtn.setText(R.string.card_btn_leave);
+            viewHolder.grpJoinBtn.setBackgroundColor(mContext.getResources().getColor(R.color.colorError, null));
+            viewHolder.grpJoinBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext, "TODO: leave functionality", Toast.LENGTH_SHORT).show();
+                }
+            });
 
+        } else {
+            viewHolder.grpJoinBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext, "TODO: join functionality", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        // TODO probably obsolete, delete if no longer needed
         viewHolder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPopupMenu(viewHolder.overflow);
             }
         });
+    }
+
+    private void hideDetails(MyViewHolder viewHolder) {
+        viewHolder.grpDetails.setVisibility(View.GONE);
+        viewHolder.grpDetailsImg.setVisibility(View.GONE);
+        viewHolder.grpLocation.setVisibility(View.GONE);
+        viewHolder.grpLocationDetails.setVisibility(View.GONE);
+        viewHolder.grpLocationImg.setVisibility(View.GONE);
+        viewHolder.divider1.setVisibility(View.GONE);
+        viewHolder.grpParticipantsImg2.setVisibility(View.GONE);
+        viewHolder.grpParticipantsDetails.setVisibility(View.GONE);
+        viewHolder.divider2.setVisibility(View.GONE);
+        viewHolder.grpJoinBtn.setVisibility(View.GONE);
+    }
+
+    private void setParticipantsDetails(MyViewHolder viewHolder, StudyGroup studyGroup) {
+        String text = mContext.getString(R.string.card_txt_participants_details);
+        ArrayList<Participant> participants = studyGroup.getParticipants();
+        for (int i = 0; i < participants.size(); i++) {
+            Participant p = participants.get(i);
+            String name = p.getName();
+            String comment = p.getComment();
+            if (comment.equals("")) {
+                text += "\n\n" + name;
+            } else {
+                text += "\n\n" + name + ":\n" + "\"" + comment + "\"";
+            }
+        }
+        viewHolder.grpParticipantsDetails.setText(text);
     }
 
     private void setStars(MyViewHolder viewHolder, StudyGroup studyGroup) {
@@ -193,6 +237,14 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
         public TextView grpDetails;
         public TextView grpLocation;
         public TextView grpLocationDetails;
+        public TextView grpParticipantsDetails;
+
+        public ImageView grpDetailsImg;
+        public ImageView grpLocationImg;
+        public ImageView grpParticipantsImg2;
+
+        public View divider1;
+        public View divider2;
 
         public ImageView star1;
         public ImageView star2;
@@ -214,6 +266,14 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
             grpDetails = (TextView) view.findViewById(R.id.txt_card_grp_details);
             grpLocation = (TextView) view.findViewById(R.id.txt_card_grp_location);
             grpLocationDetails = (TextView) view.findViewById(R.id.txt_card_grp_location_details);
+            grpParticipantsDetails = (TextView) view.findViewById(R.id.txt_card_grp_participants_details);
+
+            divider1 = view.findViewById(R.id.divider_card_participants);
+            divider2 = view.findViewById(R.id.divider_card_participants2);
+            grpParticipantsImg2 = (ImageView) view.findViewById(R.id.img_card_grp_participants2);
+
+            grpDetailsImg = (ImageView) view.findViewById(R.id.img_card_grp_details);
+            grpLocationImg = (ImageView) view.findViewById(R.id.img_card_grp_location);
 
             star1 = (ImageView) view.findViewById(R.id.img_card_grp_star1);
             star2 = (ImageView) view.findViewById(R.id.img_card_grp_star2);
@@ -237,18 +297,27 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
                 view.findViewById(R.id.txt_card_grp_location).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.txt_card_grp_location_details).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.img_card_grp_location).setVisibility(View.VISIBLE);
-                if (!isHome) view.findViewById(R.id.btn_card_grp_join).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.divider_card_participants).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.img_card_grp_participants2).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.txt_card_grp_participants_details).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.divider_card_participants2).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.btn_card_grp_join).setVisibility(View.VISIBLE);
             } else {
                 view.findViewById(R.id.txt_card_grp_details).setVisibility(View.GONE);
                 view.findViewById(R.id.img_card_grp_details).setVisibility(View.GONE);
                 view.findViewById(R.id.txt_card_grp_location).setVisibility(View.GONE);
                 view.findViewById(R.id.txt_card_grp_location_details).setVisibility(View.GONE);
                 view.findViewById(R.id.img_card_grp_location).setVisibility(View.GONE);
+                view.findViewById(R.id.divider_card_participants).setVisibility(View.GONE);
+                view.findViewById(R.id.img_card_grp_participants2).setVisibility(View.GONE);
+                view.findViewById(R.id.txt_card_grp_participants_details).setVisibility(View.GONE);
+                view.findViewById(R.id.divider_card_participants2).setVisibility(View.GONE);
                 view.findViewById(R.id.btn_card_grp_join).setVisibility(View.GONE);
             }
         }
     }
 
+    // TODO can be deleted if menu is not used, if kept remove duplicate code...
     class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
 
         private View view;
@@ -267,13 +336,24 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
                         view.findViewById(R.id.txt_card_grp_details).setVisibility(View.VISIBLE);
                         view.findViewById(R.id.img_card_grp_details).setVisibility(View.VISIBLE);
                         view.findViewById(R.id.txt_card_grp_location).setVisibility(View.VISIBLE);
+                        view.findViewById(R.id.txt_card_grp_location_details).setVisibility(View.VISIBLE);
                         view.findViewById(R.id.img_card_grp_location).setVisibility(View.VISIBLE);
+                        view.findViewById(R.id.divider_card_participants).setVisibility(View.VISIBLE);
+                        view.findViewById(R.id.img_card_grp_participants2).setVisibility(View.VISIBLE);
+                        view.findViewById(R.id.txt_card_grp_participants_details).setVisibility(View.VISIBLE);
+                        view.findViewById(R.id.divider_card_participants2).setVisibility(View.VISIBLE);
+                        view.findViewById(R.id.divider_card_participants2).setVisibility(View.VISIBLE);
                         view.findViewById(R.id.btn_card_grp_join).setVisibility(View.VISIBLE);
                     } else {
                         view.findViewById(R.id.txt_card_grp_details).setVisibility(View.GONE);
                         view.findViewById(R.id.img_card_grp_details).setVisibility(View.GONE);
                         view.findViewById(R.id.txt_card_grp_location).setVisibility(View.GONE);
+                        view.findViewById(R.id.txt_card_grp_location_details).setVisibility(View.GONE);
                         view.findViewById(R.id.img_card_grp_location).setVisibility(View.GONE);
+                        view.findViewById(R.id.divider_card_participants).setVisibility(View.GONE);
+                        view.findViewById(R.id.img_card_grp_participants2).setVisibility(View.GONE);
+                        view.findViewById(R.id.txt_card_grp_participants_details).setVisibility(View.GONE);
+                        view.findViewById(R.id.divider_card_participants2).setVisibility(View.GONE);
                         view.findViewById(R.id.btn_card_grp_join).setVisibility(View.GONE);
                     }
                     return true;

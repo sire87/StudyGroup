@@ -180,9 +180,10 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         String uid = user.getUid();
+        String name = user.getEmail();
         int knowledge = ((SeekBar) findViewById(R.id.seek_bar_knowledge)).getProgress();
         String comment = editComment.getText().toString();
-        Participant creator = new Participant(uid, comment, knowledge, true);
+        Participant creator = new Participant(uid, name, comment, knowledge, true);
 
         // create study group
         StudyGroup grp = new StudyGroup(groupName, groupDetails, participantsMax, dateFrom, dateTo,

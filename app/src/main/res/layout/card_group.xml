@@ -66,7 +66,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/card_txt_show_details"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintStart_toEndOf="@+id/img_card_grp_details"
                 app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_date" />
 
@@ -78,7 +78,7 @@
                 android:layout_marginTop="16dp"
                 android:singleLine="false"
                 android:text="@string/card_txt_location"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintStart_toEndOf="@+id/img_card_grp_location"
                 app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_details" />
 
@@ -89,9 +89,19 @@
                 android:layout_marginStart="8dp"
                 android:text="@string/card_txt_location_details"
                 android:textStyle="bold"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintStart_toEndOf="@+id/img_card_grp_location"
                 app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_location" />
+
+            <TextView
+                android:id="@+id/txt_card_grp_participants_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/card_txt_participants_details"
+                app:layout_constraintStart_toEndOf="@+id/img_card_grp_participants2"
+                app:layout_constraintTop_toBottomOf="@+id/divider_card_participants" />
 
             <ImageView
                 android:id="@+id/img_card_grp_menu"
@@ -102,7 +112,7 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_more_vert_black_24dp"
                 android:tint="@color/colorPrimaryDark"
-                android:visibility="gone"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -115,6 +125,18 @@
                 android:tint="@color/colorPrimaryDark"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_name"
+                app:srcCompat="@drawable/ic_people_black_24dp" />
+
+            <ImageView
+                android:id="@+id/img_card_grp_participants2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:tint="@color/colorPrimaryDark"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider_card_participants"
                 app:srcCompat="@drawable/ic_people_black_24dp" />
 
             <ImageView
@@ -212,7 +234,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:tint="@color/colorPrimaryDark"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_date"
                 app:srcCompat="@drawable/ic_description_black_24dp" />
@@ -224,7 +246,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:tint="@color/colorPrimaryDark"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_details"
                 app:srcCompat="@drawable/ic_location_on_black_24dp" />
@@ -234,16 +256,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="@color/colorAccent"
                 android:text="@string/card_btn_join"
                 android:textColor="@color/colorWhite"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_location_details" />
+                app:layout_constraintTop_toBottomOf="@+id/divider_card_participants2" />
 
             <View
                 android:id="@+id/divider_card_grp"
@@ -255,6 +277,32 @@
                 android:visibility="invisible"
                 app:layout_constraintStart_toEndOf="@+id/txt_card_grp_date"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/divider_card_participants"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="?android:attr/listDivider"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_location_details" />
+
+            <View
+                android:id="@+id/divider_card_participants2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="?android:attr/listDivider"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_participants_details" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
