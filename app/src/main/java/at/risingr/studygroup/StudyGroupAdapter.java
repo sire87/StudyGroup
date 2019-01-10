@@ -22,10 +22,12 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
 
     private Context mContext;
     private ArrayList<StudyGroup> studyGroups;
+    private boolean isHome;
 
-    public StudyGroupAdapter(Context mContext, ArrayList<StudyGroup> studyGroups) {
+    public StudyGroupAdapter(Context mContext, ArrayList<StudyGroup> studyGroups, boolean isHome) {
         this.mContext = mContext;
         this.studyGroups = studyGroups;
+        this.isHome = isHome;
     }
 
     @NonNull
@@ -34,13 +36,13 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_group, parent, false);
         itemView.setOnClickListener(new CardItemListener());
-        return new MyViewHolder(itemView);
+        MyViewHolder viewHolder = new MyViewHolder(itemView);
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder viewHolder, int position) {
         StudyGroup studyGroup = studyGroups.get(position);
-
         viewHolder.grpName.setText(studyGroup.getGroupName());
         viewHolder.grpParticipants.setText(studyGroup.getParticipantCount() + "/" + studyGroup.getParticipantsMax());
         viewHolder.grpTime.setText(studyGroup.getTimeFrom() + " - " + studyGroup.getTimeTo());
@@ -235,7 +237,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
                 view.findViewById(R.id.txt_card_grp_location).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.txt_card_grp_location_details).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.img_card_grp_location).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.btn_card_grp_join).setVisibility(View.VISIBLE);
+                if (!isHome) view.findViewById(R.id.btn_card_grp_join).setVisibility(View.VISIBLE);
             } else {
                 view.findViewById(R.id.txt_card_grp_details).setVisibility(View.GONE);
                 view.findViewById(R.id.img_card_grp_details).setVisibility(View.GONE);

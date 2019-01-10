@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,6 +22,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class SearchFragment extends Fragment implements View.OnClickListener {
+
+    String mUID;
+    private FirebaseAuth mAuth;
 
     private RecyclerView recyclerView;
     private StudyGroupAdapter studyGroupAdapter;
@@ -35,15 +40,21 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // TODO SIR
+        // firebase: get user info
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        mUID = user.getUid();
+
+        // set up recycler view
         recyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);
         studyGroupList = new ArrayList<StudyGroup>();
-        studyGroupAdapter = new StudyGroupAdapter(getContext(), studyGroupList);
+        studyGroupAdapter = new StudyGroupAdapter(getContext(), studyGroupList, false);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(studyGroupAdapter);
 
+        // get and display data
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -54,7 +65,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
                 for (DataSnapshot studyGroup : studyGroupsChildrenSnapshot) {
                     StudyGroup grp = studyGroup.getValue(StudyGroup.class);
-                    studyGroupList.add(grp);
+                    if (checkGroup(grp)) studyGroupList.add(grp);
                 }
 
                 studyGroupAdapter.notifyDataSetChanged();
@@ -66,8 +77,17 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
             }
         });
+    }
 
-
+    private boolean checkGroup(StudyGroup studyGroup) {
+        // check if user is already participating in a study group
+        ArrayList<Participant> participants = studyGroup.getParticipants();
+        for (int i = 0; i < participants.size(); i++) {
+            Participant p = participants.get(i);
+            String uid = p.getUid();
+            if (uid.equals(mUID)) return false;
+        }
+        return true;
     }
 
     @Override
