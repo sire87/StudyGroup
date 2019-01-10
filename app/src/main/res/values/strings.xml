@@ -62,5 +62,7 @@
     <string name="card_txt_location">Location</string>
     <string name="card_txt_location_details">Location details</string>
     <string name="card_btn_join">Join group</string>
+    <string name="card_btn_leave">Leave group</string>
+    <string name="card_txt_participants_details">Participant details</string>
 
 </resources>
