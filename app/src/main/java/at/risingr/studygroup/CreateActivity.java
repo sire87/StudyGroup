@@ -185,17 +185,19 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
         String comment = editComment.getText().toString();
         Participant creator = new Participant(uid, name, comment, knowledge, true);
 
-        // create study group
-        StudyGroup grp = new StudyGroup(groupName, groupDetails, participantsMax, dateFrom, dateTo,
-                timeFrom, timeTo, location, locationDetail, creator);
-
         // insert study group into database
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         DatabaseReference grpRef = mDatabase.child("groups").push();
+        String grpID = grpRef.getKey();
+
+        // create study group
+        StudyGroup grp = new StudyGroup(grpID, groupName, groupDetails, participantsMax, dateFrom, dateTo,
+                timeFrom, timeTo, location, locationDetail, creator);
+
         grpRef.setValue(grp);
 
         // give feedback to user and close activity
-        Toast.makeText(this, "Study Group created.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Study Group " + grpID + " created.", Toast.LENGTH_SHORT).show();
         finish();
     }
 

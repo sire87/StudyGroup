@@ -16,6 +16,12 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.MyViewHolder> {
@@ -42,7 +48,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder viewHolder, int position) {
-        StudyGroup studyGroup = studyGroups.get(position);
+        final StudyGroup studyGroup = studyGroups.get(position);
         viewHolder.grpName.setText(studyGroup.getGroupName());
         viewHolder.grpParticipants.setText(studyGroup.getParticipantCount() + "/" + studyGroup.getParticipantsMax());
         viewHolder.grpTime.setText(studyGroup.getTimeFrom() + " - " + studyGroup.getTimeTo());
@@ -66,7 +72,35 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
             viewHolder.grpJoinBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, "TODO: leave functionality", Toast.LENGTH_SHORT).show();
+
+                    // TODO
+                    DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+                    mRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            boolean test = false;
+                            DataSnapshot studyGroupsSnapshot = dataSnapshot.child("groups");
+                            Iterable<DataSnapshot> studyGroupsChildrenSnapshot = studyGroupsSnapshot.getChildren();
+                            for (DataSnapshot studyGroupSnapshot : studyGroupsChildrenSnapshot) {
+                                StudyGroup grp = studyGroupSnapshot.getValue(StudyGroup.class);
+                                if (grp.getGroupID().equals(studyGroup.getGroupID())) {
+                                    test = true;
+                                    break;
+                                }
+                            }
+                            if (test) {
+                                Toast.makeText(mContext, "found match", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(mContext, "found NO match", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             });
 

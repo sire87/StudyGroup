@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class StudyGroup {
 
+    private String groupID;
     private String groupName;
     private String groupDetails;
     private int participantCount;
@@ -20,10 +21,11 @@ public class StudyGroup {
         // don't delete(!): needed for firebase
     }
 
-    public StudyGroup(String groupName, String groupDetails, int participantsMax, String dateFrom,
-                      String dateTo, String timeFrom, String timeTo, String location,
-                      String locationDetail, Participant creator) {
+    public StudyGroup(String groupID, String groupName, String groupDetails, int participantsMax,
+                      String dateFrom, String dateTo, String timeFrom, String timeTo,
+                      String location, String locationDetail, Participant creator) {
 
+        this.groupID = groupID;
         this.groupName = groupName;
         this.groupDetails = groupDetails;
         this.participantCount = 1;
@@ -46,6 +48,14 @@ public class StudyGroup {
     ///////////////////////
     // getter and setter //
     ///////////////////////
+
+    public String getGroupID() {
+        return groupID;
+    }
+
+    public void setGroupID(String groupID) {
+        this.groupID = groupID;
+    }
 
     public String getGroupName() {
         return groupName;
