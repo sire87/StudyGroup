@@ -1,6 +1,7 @@
 package at.risingr.studygroup;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class StudyGroup {
 
@@ -41,8 +42,25 @@ public class StudyGroup {
     }
 
     public void addParticipant(Participant participant) {
-        participants.add(participant);
-        participantCount = participants.size();
+        if (this.participants == null) {
+            this.participants = new ArrayList<Participant>();
+        }
+        if (this.participantCount < this.participantsMax) {
+            this.participants.add(participant);
+            this.participantCount = participants.size();
+        }
+    }
+
+    public void removeParticipant(String uid) {
+        Iterator<Participant> it = this.participants.iterator();
+        while (it.hasNext()) {
+            Participant p = it.next();
+            if (p.getUid().equals(uid)) {
+                // this.participants.remove(p);
+                it.remove();
+                this.participantCount = participants.size();
+            }
+        }
     }
 
     ///////////////////////

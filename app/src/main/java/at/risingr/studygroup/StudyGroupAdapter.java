@@ -32,6 +32,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
     private ArrayList<StudyGroup> studyGroups;
     private boolean isHome;
     private String uid;
+    private String name;
 
     public StudyGroupAdapter(Context mContext, ArrayList<StudyGroup> studyGroups, boolean isHome) {
         this.mContext = mContext;
@@ -41,6 +42,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         this.uid = user.getUid();
+        this.name = user.getEmail();
     }
 
     @NonNull
@@ -84,21 +86,21 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
                     mRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            DataSnapshot studyGroupsSnapshot = dataSnapshot.child("groups");
-                            Iterable<DataSnapshot> studyGroupsChildrenSnapshot = studyGroupsSnapshot.getChildren();
-                            for (DataSnapshot studyGroupSnapshot : studyGroupsChildrenSnapshot) {
-                                StudyGroup grp = studyGroupSnapshot.getValue(StudyGroup.class);
-
+                            DataSnapshot dsGroups = dataSnapshot.child("groups");
+                            Iterable<DataSnapshot> dsGroupsChildren = dsGroups.getChildren();
+                            for (DataSnapshot dsGroupsChild : dsGroupsChildren) {
+                                StudyGroup grp = dsGroupsChild.getValue(StudyGroup.class);
                                 if (grp.getGroupID().equals(studyGroup.getGroupID())) {
-                                    DataSnapshot participantsD = studyGroupSnapshot.child("participants");
-                                    Iterable<DataSnapshot> participantsIt = participantsD.getChildren();
-                                    for (DataSnapshot pD : participantsIt) {
-                                        Participant p = pD.getValue(Participant.class);
+                                    DataSnapshot dsParticipants = dsGroupsChild.child("participants");
+                                    Iterable<DataSnapshot> dsParticipantsChildren = dsParticipants.getChildren();
+                                    for (DataSnapshot dsParticipantsChild : dsParticipantsChildren) {
+                                        Participant p = dsParticipantsChild.getValue(Participant.class);
                                         if (p.getUid().equals(uid)) {
-                                            pD.getRef().removeValue();
+                                            dsParticipantsChild.getRef().removeValue();
                                             int participantCount = grp.getParticipantCount();
                                             participantCount--;
-                                            studyGroupSnapshot.getRef().child("participantCount").setValue(participantCount);
+                                            dsGroupsChild.getRef().child("participantCount").setValue(participantCount);
+                                            Toast.makeText(mContext, "left study group", Toast.LENGTH_SHORT).show();
                                             break;
                                         }
                                     }
@@ -119,7 +121,32 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
             viewHolder.grpJoinBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, "TODO: join functionality", Toast.LENGTH_SHORT).show();
+                    DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+                    mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            DataSnapshot dsGroups = dataSnapshot.child("groups");
+                            Iterable<DataSnapshot> dsGroupsChildren = dsGroups.getChildren();
+                            for (DataSnapshot dsGroupsChild : dsGroupsChildren) {
+                                StudyGroup grp = dsGroupsChild.getValue(StudyGroup.class);
+                                String compareID = studyGroup.getGroupID();
+                                if (grp.getGroupID().equals(compareID)) {
+                                    Participant p = new Participant(uid, name, "comment", 3, false);
+                                    grp.addParticipant(p);
+                                    DatabaseReference drGroups = dsGroupsChild.getRef();
+                                    drGroups.setValue(grp);
+                                    Toast.makeText(mContext, "joined study group", Toast.LENGTH_SHORT).show();
+                                    break;
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
                 }
             });
         }
