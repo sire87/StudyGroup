@@ -64,7 +64,9 @@ public class HomeFragment extends Fragment {
 
                 for (DataSnapshot studyGroup : studyGroupsChildrenSnapshot) {
                     StudyGroup grp = studyGroup.getValue(StudyGroup.class);
-                    if (checkGroup(grp)) studyGroupList.add(grp);
+                    if (grp != null) {
+                        if (checkGroup(grp)) studyGroupList.add(grp);
+                    }
                 }
 
                 studyGroupAdapter.notifyDataSetChanged();
@@ -82,10 +84,12 @@ public class HomeFragment extends Fragment {
     private boolean checkGroup(StudyGroup studyGroup) {
         // check if user is already participating in a study group
         ArrayList<Participant> participants = studyGroup.getParticipants();
-        for (int i = 0; i < participants.size(); i++) {
-            Participant p = participants.get(i);
-            String uid = p.getUid();
-            if (uid.equals(mUID)) return true;
+        if (participants != null) {
+            for (int i = 0; i < participants.size(); i++) {
+                Participant p = participants.get(i);
+                String uid = p.getUid();
+                if (uid.equals(mUID)) return true;
+            }
         }
 
         // TODO check if date is still in the future

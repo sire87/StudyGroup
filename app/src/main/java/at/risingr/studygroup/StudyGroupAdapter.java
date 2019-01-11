@@ -16,6 +16,8 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,11 +31,16 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
     private Context mContext;
     private ArrayList<StudyGroup> studyGroups;
     private boolean isHome;
+    private String uid;
 
     public StudyGroupAdapter(Context mContext, ArrayList<StudyGroup> studyGroups, boolean isHome) {
         this.mContext = mContext;
         this.studyGroups = studyGroups;
         this.isHome = isHome;
+        // get current user
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        this.uid = user.getUid();
     }
 
     @NonNull
@@ -73,26 +80,30 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
                 @Override
                 public void onClick(View v) {
 
-                    // TODO
                     DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
                     mRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            boolean test = false;
                             DataSnapshot studyGroupsSnapshot = dataSnapshot.child("groups");
                             Iterable<DataSnapshot> studyGroupsChildrenSnapshot = studyGroupsSnapshot.getChildren();
                             for (DataSnapshot studyGroupSnapshot : studyGroupsChildrenSnapshot) {
                                 StudyGroup grp = studyGroupSnapshot.getValue(StudyGroup.class);
+
                                 if (grp.getGroupID().equals(studyGroup.getGroupID())) {
-                                    test = true;
+                                    DataSnapshot participantsD = studyGroupSnapshot.child("participants");
+                                    Iterable<DataSnapshot> participantsIt = participantsD.getChildren();
+                                    for (DataSnapshot pD : participantsIt) {
+                                        Participant p = pD.getValue(Participant.class);
+                                        if (p.getUid().equals(uid)) {
+                                            pD.getRef().removeValue();
+                                            int participantCount = grp.getParticipantCount();
+                                            participantCount--;
+                                            studyGroupSnapshot.getRef().child("participantCount").setValue(participantCount);
+                                            break;
+                                        }
+                                    }
                                     break;
                                 }
-                            }
-                            if (test) {
-                                Toast.makeText(mContext, "found match", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(mContext, "found NO match", Toast.LENGTH_SHORT).show();
-
                             }
                         }
 
@@ -138,14 +149,16 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
     private void setParticipantsDetails(MyViewHolder viewHolder, StudyGroup studyGroup) {
         String text = mContext.getString(R.string.card_txt_participants_details);
         ArrayList<Participant> participants = studyGroup.getParticipants();
-        for (int i = 0; i < participants.size(); i++) {
-            Participant p = participants.get(i);
-            String name = p.getName();
-            String comment = p.getComment();
-            if (comment.equals("")) {
-                text += "\n\n" + name;
-            } else {
-                text += "\n\n" + name + ":\n" + "\"" + comment + "\"";
+        if (participants != null) {
+            for (int i = 0; i < participants.size(); i++) {
+                Participant p = participants.get(i);
+                String name = p.getName();
+                String comment = p.getComment();
+                if (comment.equals("")) {
+                    text += "\n\n" + name;
+                } else {
+                    text += "\n\n" + name + ":\n" + "\"" + comment + "\"";
+                }
             }
         }
         viewHolder.grpParticipantsDetails.setText(text);
@@ -155,10 +168,12 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
         int maxKnowledge = 6;
         ArrayList<Participant> participants = studyGroup.getParticipants();
         double stars = 0;
-        for (int i = 0; i < participants.size(); i++) {
-            stars += participants.get(i).getKnowledge();
+        if (participants != null) {
+            for (int i = 0; i < participants.size(); i++) {
+                stars += participants.get(i).getKnowledge();
+            }
+            stars /= participants.size();
         }
-        stars /= participants.size();
         if (stars < 0.1 * maxKnowledge) {
             viewHolder.star1.setImageResource(R.drawable.ic_star_border_black_24dp);
             viewHolder.star2.setImageResource(R.drawable.ic_star_border_black_24dp);
