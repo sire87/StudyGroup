@@ -52,10 +52,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
 
         // display user info
-        TextView userName = (TextView) getView().findViewById(R.id.info_username);
-        userName.setText("User: " + name);
         TextView userEmail = (TextView) getView().findViewById(R.id.info_email);
-        userEmail.setText("Email: " + email);
+        userEmail.setText(email);
         TextView userEmailVerification = (TextView) getView().findViewById(R.id.info_email_verification);
         if (eMailVerified) {
             userEmailVerification.setText("verified");

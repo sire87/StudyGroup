@@ -25,6 +25,14 @@
     <string name="title_home">My study groups</string>
     <string name="title_search">Search</string>
     <string name="title_profile">Profile</string>
+    <string name="title_create">Create a new study group</string>
+
+    <!-- Strings related to searching for a new study group -->
+    <string name="search_filter">Filter study groups (all fields)</string>
+    <string name="search_filter_apply">Apply</string>
+    <string name="search_filter_clear">Clear</string>
+    <string name="search_sort_group_date">Sort by event date</string>
+    <string name="search_sort_group_creation_date">Sort by creation date</string>
 
     <!-- Strings related to creating a new study group -->
     <string name="title_activity_create">Create a new study group</string>
@@ -48,9 +56,10 @@
 
     <!-- Strings related to editing the user profile -->
     <string name="profile_txt_user">User:</string>
-    <string name="profile_txt_email">Email: </string>
+    <string name="profile_txt_email">email@email.example.com</string>
     <string name="profile_txt_verified">verified</string>
     <string name="profile_txt_not_verified">NOT verified</string>
+    <string name="profile_txt_please_verify">Please verify your email to use Study Group Manager</string>
     <string name="profile_btn_sign_out">Sign out</string>
 
     <!-- Strings related to card view -->

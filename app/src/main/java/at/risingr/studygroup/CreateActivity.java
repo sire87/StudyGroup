@@ -5,6 +5,7 @@ import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -35,10 +36,22 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
     private EditText editLocationDetail;
     private EditText editComment;
 
+    private String latLng;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+
+        // Set back arrow for toolbar
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar_create);
+        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         // get edit texts
         editGroupName = findViewById(R.id.edit_group_name);
@@ -154,6 +167,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(this, data);
                 String placeName = String.format("%s\n%s", place.getName(), place.getAddress());
+                latLng = place.getLatLng().toString();
                 ((EditText) findViewById(R.id.edit_location)).setText(placeName);
             }
         }
@@ -192,7 +206,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 
         // create study group
         StudyGroup grp = new StudyGroup(grpID, groupName, groupDetails, participantsMax, dateFrom, dateTo,
-                timeFrom, timeTo, location, locationDetail, creator);
+                timeFrom, timeTo, location, locationDetail, latLng, creator);
 
         grpRef.setValue(grp);
 

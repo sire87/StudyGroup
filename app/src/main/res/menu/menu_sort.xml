@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_sort_group_event_date"
+        android:orderInCategory="100"
+        android:title="@string/search_sort_group_date" />
+    <item
+        android:id="@+id/action_sort_group_creation_date"
+        android:orderInCategory="200"
+        android:title="@string/search_sort_group_creation_date" />
+</menu>

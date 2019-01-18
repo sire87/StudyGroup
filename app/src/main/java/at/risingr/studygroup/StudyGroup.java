@@ -16,6 +16,8 @@ public class StudyGroup {
     private String timeTo;
     private String location;
     private String locationDetail;
+
+    private String latLng;
     private ArrayList<Participant> participants;
 
     public StudyGroup() {
@@ -24,7 +26,7 @@ public class StudyGroup {
 
     public StudyGroup(String groupID, String groupName, String groupDetails, int participantsMax,
                       String dateFrom, String dateTo, String timeFrom, String timeTo,
-                      String location, String locationDetail, Participant creator) {
+                      String location, String locationDetail, String latLng, Participant creator) {
 
         this.groupID = groupID;
         this.groupName = groupName;
@@ -37,6 +39,7 @@ public class StudyGroup {
         this.timeTo = timeTo;
         this.location = location;
         this.locationDetail = locationDetail;
+        this.latLng = latLng;
         this.participants = new ArrayList<Participant>();
         participants.add(creator);
     }
@@ -153,6 +156,14 @@ public class StudyGroup {
 
     public void setLocationDetail(String locationDetail) {
         this.locationDetail = locationDetail;
+    }
+
+    public String getLatLng() {
+        return latLng;
+    }
+
+    public void setLatLng(String latLng) {
+        this.latLng = latLng;
     }
 
     public ArrayList<Participant> getParticipants() {
