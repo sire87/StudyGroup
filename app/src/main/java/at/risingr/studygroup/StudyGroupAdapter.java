@@ -1,9 +1,13 @@
 package at.risingr.studygroup;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.MyViewHolder> {
@@ -74,6 +79,14 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
         hideDetails(viewHolder);
         setStars(viewHolder, studyGroup);
         setParticipantsDetails(viewHolder, studyGroup);
+
+        // display location map
+        String latLng = studyGroup.getLatLng();
+        String url = "https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyBPePir5vHnng0wXHAPqQuelh4mnMb9lxE&size=320x200&markers=color:0x53C679%7Clabel:L%7C" + latLng;
+        ImageView mapImg = (ImageView) viewHolder.grpLocationMapImg;
+        DownloadImageTask downloadImageTask = new DownloadImageTask(mapImg);
+        downloadImageTask.execute(url);
+
 
         if (isHome) {
             viewHolder.grpJoinBtn.setText(R.string.card_btn_leave);
@@ -166,6 +179,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
         viewHolder.grpLocation.setVisibility(View.GONE);
         viewHolder.grpLocationDetails.setVisibility(View.GONE);
         viewHolder.grpLocationImg.setVisibility(View.GONE);
+        viewHolder.grpLocationMapImg.setVisibility(View.GONE);
         viewHolder.divider1.setVisibility(View.GONE);
         viewHolder.grpParticipantsImg2.setVisibility(View.GONE);
         viewHolder.grpParticipantsDetails.setVisibility(View.GONE);
@@ -317,6 +331,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
 
         public ImageView grpDetailsImg;
         public ImageView grpLocationImg;
+        public ImageView grpLocationMapImg;
         public ImageView grpParticipantsImg2;
 
         public View divider1;
@@ -350,6 +365,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
 
             grpDetailsImg = (ImageView) view.findViewById(R.id.img_card_grp_details);
             grpLocationImg = (ImageView) view.findViewById(R.id.img_card_grp_location);
+            grpLocationMapImg = (ImageView) view.findViewById(R.id.img_location_map);
 
             star1 = (ImageView) view.findViewById(R.id.img_card_grp_star1);
             star2 = (ImageView) view.findViewById(R.id.img_card_grp_star2);
@@ -373,9 +389,11 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
                 view.findViewById(R.id.txt_card_grp_location).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.txt_card_grp_location_details).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.img_card_grp_location).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.img_location_map).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.divider_card_participants).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.img_card_grp_participants2).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.txt_card_grp_participants_details).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.divider_card_participants2).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.divider_card_participants2).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.btn_card_grp_join).setVisibility(View.VISIBLE);
             } else {
@@ -384,6 +402,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
                 view.findViewById(R.id.txt_card_grp_location).setVisibility(View.GONE);
                 view.findViewById(R.id.txt_card_grp_location_details).setVisibility(View.GONE);
                 view.findViewById(R.id.img_card_grp_location).setVisibility(View.GONE);
+                view.findViewById(R.id.img_location_map).setVisibility(View.GONE);
                 view.findViewById(R.id.divider_card_participants).setVisibility(View.GONE);
                 view.findViewById(R.id.img_card_grp_participants2).setVisibility(View.GONE);
                 view.findViewById(R.id.txt_card_grp_participants_details).setVisibility(View.GONE);
@@ -414,6 +433,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
                         view.findViewById(R.id.txt_card_grp_location).setVisibility(View.VISIBLE);
                         view.findViewById(R.id.txt_card_grp_location_details).setVisibility(View.VISIBLE);
                         view.findViewById(R.id.img_card_grp_location).setVisibility(View.VISIBLE);
+                        view.findViewById(R.id.img_location_map).setVisibility(View.VISIBLE);
                         view.findViewById(R.id.divider_card_participants).setVisibility(View.VISIBLE);
                         view.findViewById(R.id.img_card_grp_participants2).setVisibility(View.VISIBLE);
                         view.findViewById(R.id.txt_card_grp_participants_details).setVisibility(View.VISIBLE);
@@ -426,6 +446,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
                         view.findViewById(R.id.txt_card_grp_location).setVisibility(View.GONE);
                         view.findViewById(R.id.txt_card_grp_location_details).setVisibility(View.GONE);
                         view.findViewById(R.id.img_card_grp_location).setVisibility(View.GONE);
+                        view.findViewById(R.id.img_location_map).setVisibility(View.GONE);
                         view.findViewById(R.id.divider_card_participants).setVisibility(View.GONE);
                         view.findViewById(R.id.img_card_grp_participants2).setVisibility(View.GONE);
                         view.findViewById(R.id.txt_card_grp_participants_details).setVisibility(View.GONE);
@@ -439,6 +460,32 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
                     return true;
             }
             return false;
+        }
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String url = urls[0];
+            Bitmap mapImg = null;
+            try {
+                InputStream in = new java.net.URL(url).openStream();
+                mapImg = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mapImg;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+            bmImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }
     }
 }

@@ -167,7 +167,8 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(this, data);
                 String placeName = String.format("%s\n%s", place.getName(), place.getAddress());
-                latLng = place.getLatLng().toString();
+                latLng = place.getLatLng().latitude + "," + place.getLatLng().longitude;
+
                 ((EditText) findViewById(R.id.edit_location)).setText(placeName);
             }
         }
