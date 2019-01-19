@@ -60,6 +60,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                studyGroupList.clear();
+
                 DataSnapshot studyGroupsSnapshot = dataSnapshot.child("groups");
                 Iterable<DataSnapshot> studyGroupsChildrenSnapshot = studyGroupsSnapshot.getChildren();
 
@@ -92,7 +94,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             }
         }
 
-        // TODO check if date is still in the future
+        // TODO check if end date is still in the future
+
+        // TODO check if group is not full yet
 
         return true;
     }

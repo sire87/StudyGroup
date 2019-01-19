@@ -59,6 +59,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                studyGroupList.clear();
+
                 DataSnapshot studyGroupsSnapshot = dataSnapshot.child("groups");
                 Iterable<DataSnapshot> studyGroupsChildrenSnapshot = studyGroupsSnapshot.getChildren();
 
@@ -92,7 +94,7 @@ public class HomeFragment extends Fragment {
             }
         }
 
-        // TODO check if date is still in the future
+        // TODO check if end date is still in the future
 
         return false;
     }

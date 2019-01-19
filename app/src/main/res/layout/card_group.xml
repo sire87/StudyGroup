@@ -89,6 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@string/card_txt_location_details"
+                android:textColor="@color/colorAccent"
                 android:textStyle="bold"
                 android:visibility="visible"
                 app:layout_constraintStart_toEndOf="@+id/img_card_grp_location"

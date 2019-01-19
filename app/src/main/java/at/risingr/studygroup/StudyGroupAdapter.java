@@ -5,6 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -31,7 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.MyViewHolder> {
+public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.MyViewHolder> implements LeaveGroupDialogFragment.LeaveGroupDialogListener {
 
     private Context mContext;
     private ArrayList<StudyGroup> studyGroups;
@@ -94,39 +97,11 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
             viewHolder.grpJoinBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
-                    mRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            DataSnapshot dsGroups = dataSnapshot.child("groups");
-                            Iterable<DataSnapshot> dsGroupsChildren = dsGroups.getChildren();
-                            for (DataSnapshot dsGroupsChild : dsGroupsChildren) {
-                                StudyGroup grp = dsGroupsChild.getValue(StudyGroup.class);
-                                if (grp.getGroupID().equals(studyGroup.getGroupID())) {
-                                    DataSnapshot dsParticipants = dsGroupsChild.child("participants");
-                                    Iterable<DataSnapshot> dsParticipantsChildren = dsParticipants.getChildren();
-                                    for (DataSnapshot dsParticipantsChild : dsParticipantsChildren) {
-                                        Participant p = dsParticipantsChild.getValue(Participant.class);
-                                        if (p.getUid().equals(uid)) {
-                                            dsParticipantsChild.getRef().removeValue();
-                                            int participantCount = grp.getParticipantCount();
-                                            participantCount--;
-                                            dsGroupsChild.getRef().child("participantCount").setValue(participantCount);
-                                            Toast.makeText(mContext, "left study group", Toast.LENGTH_SHORT).show();
-                                            break;
-                                        }
-                                    }
-                                    break;
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
+                    LeaveGroupDialogFragment leaveGroupDialog = new LeaveGroupDialogFragment();
+                    FragmentManager fm = ((AppCompatActivity) mContext).getSupportFragmentManager();
+                    leaveGroupDialog.setStudyGroup(studyGroup);
+                    leaveGroupDialog.setListener(StudyGroupAdapter.this);
+                    leaveGroupDialog.show(fm, "Leave Group Fragment");
                 }
             });
 
@@ -302,6 +277,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
         }
     }
 
+    // TODO can be deleted if menu is not used
     private void showPopupMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(mContext, view);
         MenuInflater inflater = popupMenu.getMenuInflater();
@@ -317,6 +293,49 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
     @Override
     public int getItemCount() {
         return studyGroups.size();
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        final StudyGroup studyGroup = ((LeaveGroupDialogFragment) dialog).studyGroup;
+        Toast.makeText(mContext, "positive click", Toast.LENGTH_SHORT).show();
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+        mRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                DataSnapshot dsGroups = dataSnapshot.child("groups");
+                Iterable<DataSnapshot> dsGroupsChildren = dsGroups.getChildren();
+                for (DataSnapshot dsGroupsChild : dsGroupsChildren) {
+                    StudyGroup grp = dsGroupsChild.getValue(StudyGroup.class);
+                    if (grp.getGroupID().equals(studyGroup.getGroupID())) {
+                        DataSnapshot dsParticipants = dsGroupsChild.child("participants");
+                        Iterable<DataSnapshot> dsParticipantsChildren = dsParticipants.getChildren();
+                        for (DataSnapshot dsParticipantsChild : dsParticipantsChildren) {
+                            Participant p = dsParticipantsChild.getValue(Participant.class);
+                            if (p.getUid().equals(uid)) {
+                                dsParticipantsChild.getRef().removeValue();
+                                int participantCount = grp.getParticipantCount();
+                                participantCount--;
+                                dsGroupsChild.getRef().child("participantCount").setValue(participantCount);
+                                Toast.makeText(mContext, "left study group", Toast.LENGTH_SHORT).show();
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        Toast.makeText(mContext, "negative click", Toast.LENGTH_SHORT).show();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
