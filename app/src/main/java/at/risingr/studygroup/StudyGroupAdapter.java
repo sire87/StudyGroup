@@ -34,7 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.MyViewHolder> implements LeaveGroupDialogFragment.LeaveGroupDialogListener {
+public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.MyViewHolder> implements LeaveGroupDialogFragment.LeaveGroupDialogListener, JoinGroupDialogFragment.JoinGroupDialogListener {
 
     private Context mContext;
     private ArrayList<StudyGroup> studyGroups;
@@ -109,6 +109,13 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
             viewHolder.grpJoinBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    JoinGroupDialogFragment joinGroupDialog = new JoinGroupDialogFragment();
+                    FragmentManager fm = ((AppCompatActivity) mContext).getSupportFragmentManager();
+                    joinGroupDialog.setStudyGroup(studyGroup);
+                    joinGroupDialog.setListener(StudyGroupAdapter.this);
+                    joinGroupDialog.show(fm, "Join Group Fragment");
+
+                    // TODO move code below...
                     DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
                     mRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -335,7 +342,18 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
 
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
-        Toast.makeText(mContext, "negative click", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDialogJoinClick(DialogFragment dialog) {
+        Toast.makeText(mContext, "join click", Toast.LENGTH_SHORT).show();
+        // TODO
+    }
+
+    @Override
+    public void onDialogCancelClick(DialogFragment dialog) {
+        Toast.makeText(mContext, "cancel click", Toast.LENGTH_SHORT).show();
+        // TODO
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

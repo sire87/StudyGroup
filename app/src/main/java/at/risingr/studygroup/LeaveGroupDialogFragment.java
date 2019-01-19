@@ -10,19 +10,11 @@ import android.support.v4.app.DialogFragment;
 
 public class LeaveGroupDialogFragment extends DialogFragment {
 
-    LeaveGroupDialogListener mListener;
-    StudyGroup studyGroup;
+    public LeaveGroupDialogListener mListener;
+    public StudyGroup studyGroup;
 
     public LeaveGroupDialogFragment() {
         super();
-    }
-
-    public void setListener(LeaveGroupDialogListener listener) {
-        mListener = listener;
-    }
-
-    public void setStudyGroup(StudyGroup studyGroup) {
-        this.studyGroup = studyGroup;
     }
 
     @NonNull
@@ -30,7 +22,8 @@ public class LeaveGroupDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Leave study group");
-        builder.setMessage("Do you really want to leave study group: " + this.studyGroup.getGroupName());
+        builder.setMessage("Do you really want to leave this study group:\n" +
+                this.studyGroup.getGroupName());
         builder.setPositiveButton("Leave study group", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -43,13 +36,19 @@ public class LeaveGroupDialogFragment extends DialogFragment {
                 mListener.onDialogNegativeClick(LeaveGroupDialogFragment.this);
             }
         });
-
         return builder.create();
+    }
+
+    public void setListener(LeaveGroupDialogListener listener) {
+        mListener = listener;
+    }
+
+    public void setStudyGroup(StudyGroup studyGroup) {
+        this.studyGroup = studyGroup;
     }
 
     public interface LeaveGroupDialogListener {
         public void onDialogPositiveClick(DialogFragment dialog);
-
         public void onDialogNegativeClick(DialogFragment dialog);
     }
 }

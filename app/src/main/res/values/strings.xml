@@ -54,6 +54,9 @@
     <string name="create_group_btn_cancel">Cancel</string>
     <string name="create_group_btn_create">Create study group</string>
 
+    <!-- Strings related to joining a new study group -->
+    <string name="join_group_btn_join">Join study group</string>
+
     <!-- Strings related to editing the user profile -->
     <string name="profile_txt_user">User:</string>
     <string name="profile_txt_email">email@email.example.com</string>
