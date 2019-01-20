@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -40,31 +39,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         String email = user.getEmail();
         String name = user.getDisplayName();
 
-        // set default username
-        if (name == null) {
-            String[] emailSplit = email.split("@");
-            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(emailSplit[0])
-                    .build();
-            user.updateProfile(profileUpdates);
-            name = user.getDisplayName();
-            mDatabase.child("users").child(uid).child("name").setValue(name);
-        }
-
         // display user info
         TextView userEmail = (TextView) getView().findViewById(R.id.info_email);
         userEmail.setText(email);
         TextView userEmailVerification = (TextView) getView().findViewById(R.id.info_email_verification);
+        TextView userDoEmailVerification = (TextView) getView().findViewById(R.id.info_do_email_verification);
         if (eMailVerified) {
-            userEmailVerification.setText("verified");
-            userEmailVerification.setTextColor(getResources().getColor(R.color.colorAccent, null));
+            userDoEmailVerification.setVisibility(View.GONE);
         } else {
-            userEmailVerification.setText("NOT verified");
+            userEmailVerification.setText(R.string.profile_txt_not_verified);
             userEmailVerification.setTextColor(getResources().getColor(R.color.colorError, null));
-            TextView userDoEmailVerification = (TextView) getView().findViewById(R.id.info_do_email_verification);
-            userDoEmailVerification.setText("Please verify your email to use Study Group Manager.");
-            userDoEmailVerification.setTextColor(getResources().getColor(R.color.colorError, null));
-            userDoEmailVerification.setVisibility(View.VISIBLE);
         }
 
         // set on click listeners

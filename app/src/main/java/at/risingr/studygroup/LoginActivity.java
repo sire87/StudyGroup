@@ -92,6 +92,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     public void onClick(View v) {
+        // first reset feedback text view
+        mFeedbackView.setVisibility(View.GONE);
+
         int i = v.getId();
         if (i == R.id.button_sign_in) {
             signIn(mEmailView.getText().toString(), mPasswordView.getText().toString());
@@ -120,7 +123,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    // sign in success, update UI with the signed-in user's information
+                    // create account success, update UI with the signed-in user's information
                     Log.d(TAG, "create account: success");
                     Toast.makeText(LoginActivity.this, "Authentication (registration) successful.", Toast.LENGTH_SHORT).show();
                     // send verification email
@@ -132,8 +135,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     String email = firebaseUser.getEmail();
                     mDatabase = FirebaseDatabase.getInstance().getReference();
                     mDatabase.child("users").child(uid).child("email").setValue(email);
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    redirectToMainActivity(user);
                 } else {
-                    // if sign in fails, display message to the user
+                    // if create account fails, display message to the user
                     Log.w(TAG, "create account: failure", task.getException());
                     Toast.makeText(LoginActivity.this, "Authentication (registration) failed.", Toast.LENGTH_SHORT).show();
                     mFeedbackView.setText(task.getException().getMessage());

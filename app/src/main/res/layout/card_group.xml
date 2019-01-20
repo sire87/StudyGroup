@@ -159,10 +159,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:tint="@color/colorPrimary"
+                android:tint="@color/colorPrimaryDark"
                 app:layout_constraintStart_toEndOf="@+id/img_card_grp_knowledge"
                 app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_name"
-                app:srcCompat="@drawable/ic_star_black_24dp" />
+                app:srcCompat="@drawable/ic_lightbulb_outline_black_24dp" />
 
             <ImageView
                 android:id="@+id/img_card_grp_star2"
@@ -170,10 +170,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:tint="@color/colorPrimary"
+                android:tint="@color/colorPrimaryDark"
                 app:layout_constraintStart_toEndOf="@+id/img_card_grp_star1"
                 app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_name"
-                app:srcCompat="@drawable/ic_star_black_24dp" />
+                app:srcCompat="@drawable/ic_lightbulb_outline_black_24dp" />
 
             <ImageView
                 android:id="@+id/img_card_grp_star3"
@@ -181,10 +181,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:tint="@color/colorPrimary"
+                android:tint="@color/colorPrimaryDark"
                 app:layout_constraintStart_toEndOf="@+id/img_card_grp_star2"
                 app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_name"
-                app:srcCompat="@drawable/ic_star_black_24dp" />
+                app:srcCompat="@drawable/ic_lightbulb_outline_black_24dp" />
 
             <ImageView
                 android:id="@+id/img_card_grp_star4"
@@ -192,10 +192,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:tint="@color/colorPrimary"
+                android:tint="@color/colorPrimaryDark"
                 app:layout_constraintStart_toEndOf="@+id/img_card_grp_star3"
                 app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_name"
-                app:srcCompat="@drawable/ic_star_half_black_24dp" />
+                app:srcCompat="@drawable/ic_lightbulb_outline_black_24dp" />
 
             <ImageView
                 android:id="@+id/img_card_grp_star5"
@@ -203,10 +203,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:tint="@color/colorPrimary"
+                android:tint="@color/colorPrimaryDark"
                 app:layout_constraintStart_toEndOf="@+id/img_card_grp_star4"
                 app:layout_constraintTop_toBottomOf="@+id/txt_card_grp_name"
-                app:srcCompat="@drawable/ic_star_border_black_24dp" />
+                app:srcCompat="@drawable/ic_lightbulb_outline_black_24dp" />
 
             <ImageView
                 android:id="@+id/img_card_grp_date"

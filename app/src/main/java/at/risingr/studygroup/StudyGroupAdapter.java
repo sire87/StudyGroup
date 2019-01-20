@@ -70,7 +70,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
         viewHolder.grpParticipants.setText(studyGroup.getParticipantCount() + "/" + studyGroup.getParticipantsMax());
         viewHolder.grpTime.setText(studyGroup.getTimeFrom() + " - " + studyGroup.getTimeTo());
         viewHolder.grpDetails.setText(studyGroup.getGroupDetails());
-        viewHolder.grpLocation.setText(studyGroup.getLocation());
+        viewHolder.grpLocation.setText(insertLineBreaks(studyGroup.getLocation()));
         viewHolder.grpLocationDetails.setText(studyGroup.getLocationDetail());
 
         if (studyGroup.getDateTo().equals(studyGroup.getDateFrom())) {
@@ -80,7 +80,8 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
         }
 
         hideDetails(viewHolder);
-        setStars(viewHolder, studyGroup);
+        setLightbulbs(viewHolder, studyGroup);
+        // setStars(viewHolder, studyGroup);
         setParticipantsDetails(viewHolder, studyGroup);
 
         // display location map
@@ -157,6 +158,63 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
             }
         }
         viewHolder.grpParticipantsDetails.setText(text);
+    }
+
+    private void setLightbulbs(MyViewHolder viewHolder, StudyGroup studyGroup) {
+        int maxKnowledge = 6;
+        ArrayList<Participant> participants = studyGroup.getParticipants();
+        double bulbs = 0;
+        if (participants != null) {
+            for (int i = 0; i < participants.size(); i++) {
+                bulbs += participants.get(i).getKnowledge();
+            }
+            bulbs /= participants.size();
+        }
+        if (bulbs < 2) {
+            viewHolder.star1.setVisibility(View.INVISIBLE);
+            viewHolder.star2.setVisibility(View.INVISIBLE);
+            viewHolder.star3.setVisibility(View.INVISIBLE);
+            viewHolder.star4.setVisibility(View.INVISIBLE);
+            viewHolder.star5.setVisibility(View.INVISIBLE);
+            return;
+        }
+        if (bulbs < 3) {
+            viewHolder.star1.setVisibility(View.VISIBLE);
+            viewHolder.star2.setVisibility(View.INVISIBLE);
+            viewHolder.star3.setVisibility(View.INVISIBLE);
+            viewHolder.star4.setVisibility(View.INVISIBLE);
+            viewHolder.star5.setVisibility(View.INVISIBLE);
+            return;
+        }
+        if (bulbs < 4) {
+            viewHolder.star1.setVisibility(View.VISIBLE);
+            viewHolder.star2.setVisibility(View.VISIBLE);
+            viewHolder.star3.setVisibility(View.INVISIBLE);
+            viewHolder.star4.setVisibility(View.INVISIBLE);
+            viewHolder.star5.setVisibility(View.INVISIBLE);
+            return;
+        }
+        if (bulbs < 5) {
+            viewHolder.star1.setVisibility(View.VISIBLE);
+            viewHolder.star2.setVisibility(View.VISIBLE);
+            viewHolder.star3.setVisibility(View.VISIBLE);
+            viewHolder.star4.setVisibility(View.INVISIBLE);
+            viewHolder.star5.setVisibility(View.INVISIBLE);
+            return;
+        }
+        if (bulbs < 6) {
+            viewHolder.star1.setVisibility(View.VISIBLE);
+            viewHolder.star2.setVisibility(View.VISIBLE);
+            viewHolder.star3.setVisibility(View.VISIBLE);
+            viewHolder.star4.setVisibility(View.VISIBLE);
+            viewHolder.star5.setVisibility(View.INVISIBLE);
+        } else {
+            viewHolder.star1.setVisibility(View.VISIBLE);
+            viewHolder.star2.setVisibility(View.VISIBLE);
+            viewHolder.star3.setVisibility(View.VISIBLE);
+            viewHolder.star4.setVisibility(View.VISIBLE);
+            viewHolder.star5.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setStars(MyViewHolder viewHolder, StudyGroup studyGroup) {
@@ -254,6 +312,11 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
             viewHolder.star4.setImageResource(R.drawable.ic_star_black_24dp);
             viewHolder.star5.setImageResource(R.drawable.ic_star_black_24dp);
         }
+    }
+
+    private String insertLineBreaks(String s) {
+        String lineBreaks = s.replace(", ", "\n");
+        return lineBreaks;
     }
 
     // TODO can be deleted if menu is not used
