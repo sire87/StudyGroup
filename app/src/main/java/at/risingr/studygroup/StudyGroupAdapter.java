@@ -114,34 +114,6 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
                     joinGroupDialog.setStudyGroup(studyGroup);
                     joinGroupDialog.setListener(StudyGroupAdapter.this);
                     joinGroupDialog.show(fm, "Join Group Fragment");
-
-                    // TODO move code below...
-                    DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
-                    mRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            DataSnapshot dsGroups = dataSnapshot.child("groups");
-                            Iterable<DataSnapshot> dsGroupsChildren = dsGroups.getChildren();
-                            for (DataSnapshot dsGroupsChild : dsGroupsChildren) {
-                                StudyGroup grp = dsGroupsChild.getValue(StudyGroup.class);
-                                String compareID = studyGroup.getGroupID();
-                                if (grp.getGroupID().equals(compareID)) {
-                                    Participant p = new Participant(uid, name, "comment", 3, false);
-                                    grp.addParticipant(p);
-                                    DatabaseReference drGroups = dsGroupsChild.getRef();
-                                    drGroups.setValue(grp);
-                                    Toast.makeText(mContext, "joined study group", Toast.LENGTH_SHORT).show();
-                                    break;
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
                 }
             });
         }
@@ -307,7 +279,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
         final StudyGroup studyGroup = ((LeaveGroupDialogFragment) dialog).studyGroup;
         Toast.makeText(mContext, "positive click", Toast.LENGTH_SHORT).show();
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
-        mRef.addValueEventListener(new ValueEventListener() {
+        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 DataSnapshot dsGroups = dataSnapshot.child("groups");
@@ -346,8 +318,36 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
 
     @Override
     public void onDialogJoinClick(DialogFragment dialog) {
+        final StudyGroup studyGroup = ((JoinGroupDialogFragment) dialog).studyGroup;
+        final int knowledge = ((JoinGroupDialogFragment) dialog).knowledge;
+        final String comment = ((JoinGroupDialogFragment) dialog).comment;
+
         Toast.makeText(mContext, "join click", Toast.LENGTH_SHORT).show();
-        // TODO
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                DataSnapshot dsGroups = dataSnapshot.child("groups");
+                Iterable<DataSnapshot> dsGroupsChildren = dsGroups.getChildren();
+                for (DataSnapshot dsGroupsChild : dsGroupsChildren) {
+                    StudyGroup grp = dsGroupsChild.getValue(StudyGroup.class);
+                    String compareID = studyGroup.getGroupID();
+                    if (grp.getGroupID().equals(compareID)) {
+                        Participant p = new Participant(uid, name, comment, knowledge, false);
+                        grp.addParticipant(p);
+                        DatabaseReference drGroups = dsGroupsChild.getRef();
+                        drGroups.setValue(grp);
+                        Toast.makeText(mContext, "joined study group", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

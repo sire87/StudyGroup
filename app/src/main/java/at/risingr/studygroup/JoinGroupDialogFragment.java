@@ -59,8 +59,10 @@ public class JoinGroupDialogFragment extends DialogFragment implements View.OnCl
         if (id == R.id.btn_join) {
             this.knowledge = this.seekBarKnowledge.getProgress();
             this.comment = this.editComment.getText().toString();
+            mListener.onDialogJoinClick(JoinGroupDialogFragment.this);
             getDialog().dismiss();
         } else {
+            mListener.onDialogCancelClick(JoinGroupDialogFragment.this);
             getDialog().dismiss();
         }
     }
