@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SearchFragment extends Fragment implements View.OnClickListener {
 
@@ -78,6 +79,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                     }
                 }
 
+                Collections.reverse(studyGroupList);
                 studyGroupAdapter.notifyDataSetChanged();
 
             }
