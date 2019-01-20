@@ -9,12 +9,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewParent;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
                     if (eMailVerified) {
                         fragment = new HomeFragment();
                         ((Toolbar) findViewById(R.id.toolbar_main)).setTitle(R.string.title_home);
-                        ((ImageView) findViewById(R.id.toolbar_menu)).setVisibility(View.VISIBLE);
+                        ((ImageView) findViewById(R.id.toolbar_menu)).setVisibility(View.GONE);
                     }
                     break;
                 case R.id.navigation_search:
@@ -74,42 +71,11 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         eMailVerified = user.isEmailVerified();
 
-        // set options on click listener
-        ((ImageView) findViewById(R.id.toolbar_menu)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(mContext, view);
-                MenuInflater inflater = popupMenu.getMenuInflater();
-                inflater.inflate(R.menu.menu_sort, popupMenu.getMenu());
-
-                ViewParent viewParent = view.getParent();
-                View parentView = (View) viewParent;
-
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-
-                            case R.id.action_sort_group_event_date:
-                                Toast.makeText(mContext, "TODO event date", Toast.LENGTH_SHORT).show();
-                                return true;
-
-                            case R.id.action_sort_group_creation_date:
-                                Toast.makeText(mContext, "TODO creation date", Toast.LENGTH_SHORT).show();
-                                return true;
-                        }
-                        return false;
-                    }
-                });
-                popupMenu.show();
-            }
-        });
-
         // load default content fragment
         if (eMailVerified) {
             loadFragment(new HomeFragment());
             ((Toolbar) findViewById(R.id.toolbar_main)).setTitle(R.string.title_home);
-            ((ImageView) findViewById(R.id.toolbar_menu)).setVisibility(View.VISIBLE);
+            ((ImageView) findViewById(R.id.toolbar_menu)).setVisibility(View.GONE);
         } else {
             loadFragment(new ProfileFragment());
             navigation.setSelectedItemId(R.id.navigation_profile);

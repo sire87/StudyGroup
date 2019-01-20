@@ -1,5 +1,6 @@
 package at.risingr.studygroup;
 
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,10 +18,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Locale;
 
 public class HomeFragment extends Fragment {
 
@@ -56,13 +58,15 @@ public class HomeFragment extends Fragment {
 
         // get and display data
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
-        mRef.addValueEventListener(new ValueEventListener() {
+        Query mQuery = mRef.child("groups").orderByChild("dateTo");
+
+        mQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 studyGroupList.clear();
 
-                DataSnapshot studyGroupsSnapshot = dataSnapshot.child("groups");
+                DataSnapshot studyGroupsSnapshot = dataSnapshot;
                 Iterable<DataSnapshot> studyGroupsChildrenSnapshot = studyGroupsSnapshot.getChildren();
 
                 for (DataSnapshot studyGroup : studyGroupsChildrenSnapshot) {
@@ -72,7 +76,6 @@ public class HomeFragment extends Fragment {
                     }
                 }
 
-                Collections.reverse(studyGroupList);
                 studyGroupAdapter.notifyDataSetChanged();
 
             }
@@ -86,18 +89,35 @@ public class HomeFragment extends Fragment {
     }
 
     private boolean checkGroup(StudyGroup studyGroup) {
+
+        boolean isInGroup = false;
+        boolean isInFuture = false;
+
         // check if user is already participating in a study group
         ArrayList<Participant> participants = studyGroup.getParticipants();
         if (participants != null) {
             for (int i = 0; i < participants.size(); i++) {
                 Participant p = participants.get(i);
                 String uid = p.getUid();
-                if (uid.equals(mUID)) return true;
+                if (uid.equals(mUID)) {
+                    isInGroup = true;
+                }
             }
         }
 
-        // TODO check if end date is still in the future
-
-        return false;
+        // check if end date is still in the future
+        String dateTo = studyGroup.getDateTo();
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        String dateCurrent = String.format(Locale.ENGLISH, "%d-%02d-%02d", year, month + 1, day);
+        int comparison = dateTo.compareTo(dateCurrent);
+        if (comparison >= 0) {
+            isInFuture = true;
+        } else {
+            isInFuture = false;
+        }
+        return (isInGroup && isInFuture);
     }
 }
