@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,13 +44,25 @@ public class JoinGroupDialogFragment extends DialogFragment implements View.OnCl
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.FILL_PARENT);
         getDialog().setTitle("Join study group");
+
+        Toolbar mToolbar = (Toolbar) view.findViewById(R.id.toolbar_join);
+        mToolbar.setTitle(studyGroup.getGroupName());
+        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDialog().dismiss();
+            }
+        });
+
         this.seekBarKnowledge = (SeekBar) view.findViewById(R.id.seek_bar_knowledge);
         this.editComment = (EditText) view.findViewById(R.id.edit_comment);
+
         Button cancelBtn = (Button) view.findViewById(R.id.btn_cancel_join);
-        Button joinBtn = (Button) view.findViewById(R.id.btn_join);
         cancelBtn.setOnClickListener(this);
+        Button joinBtn = (Button) view.findViewById(R.id.btn_join);
         joinBtn.setOnClickListener(this);
     }
 
@@ -61,7 +74,7 @@ public class JoinGroupDialogFragment extends DialogFragment implements View.OnCl
             this.comment = this.editComment.getText().toString();
             mListener.onDialogJoinClick(JoinGroupDialogFragment.this);
             getDialog().dismiss();
-        } else {
+        } else if (id == R.id.btn_cancel_join) {
             mListener.onDialogCancelClick(JoinGroupDialogFragment.this);
             getDialog().dismiss();
         }
