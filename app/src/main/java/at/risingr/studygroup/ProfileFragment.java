@@ -35,9 +35,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         boolean eMailVerified = user.isEmailVerified();
-        String uid = user.getUid();
         String email = user.getEmail();
-        String name = user.getDisplayName();
 
         // display user info
         TextView userEmail = (TextView) getView().findViewById(R.id.info_email);
@@ -65,6 +63,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             if (mAuth.getCurrentUser() == null) {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
+                getActivity().finish();
             }
         }
     }
