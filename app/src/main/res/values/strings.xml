@@ -58,17 +58,30 @@
     <string name="join_group_btn_join">Join study group</string>
 
     <!-- String related to help -->
-    <string name="help_title">Help</string>
-    <string name="help_txt">My Study Groups:
-    \nHere you will find all the study you are participating in. Study groups are ordered by event date in ascending order.
-
-    \n\nSearch:
-    \nHere you will find all the study groups you are not yet participating in.
-
-    \n\nProfile:
-    \nHere you can check your e-mail address and sign out of the app.
-
-    </string>
+    <string name="help_title">How to Study Group Manager</string>
+    <string name="help_section_my">Here you will find all study groups you are participating in,
+        ordered by event date in ascending order. Study groups with an event date in the past will
+        be filtered out. Click on a study group the get more details and to leave it.</string>
+    <string name="help_section_search">Here you will find all study groups you are not yet
+    participating in, ordered by event creation date in descending order. You can alternatively
+        order by event date in ascending order instead, by clicking on the sort icon (see icons)
+        and choosing the corresponding option. You can filter the study group list by entering some
+        keyword in the text field and clicking the apply button. To delete the filter click the
+        clear button. Study groups with an event date in the past will be filtered out. Click on a
+        study group to get more details and to join it.</string>
+    <string name="help_section_profile">Here you can view your e-mail address which servers as user
+        name. You can sign out of the app here.</string>
+    <string name="help_icon_participants">current participants / max. participants of study group</string>
+    <string name="help_icon_knowledge">average knowledge of study group participants, more
+        lightbulbs reflect more knowledge (min=1, max=6)</string>
+    <string name="help_icon_date">study group event date</string>
+    <string name="help_icon_time">study group event time</string>
+    <string name="help_icon_description">study group description</string>
+    <string name="help_icon_location">study group location</string>
+    <string name="help_icon_sort">sorting options for study group list (only available in toolbar
+        of search section)</string>
+    <string name="help_create">You can create a new study group from within any section by
+        clicking on the green + button and filling out the corresponding form.</string>
 
     <!-- Strings related to editing the user profile -->
     <string name="profile_txt_user">User:</string>
