@@ -331,10 +331,9 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
                         for (DataSnapshot dsParticipantsChild : dsParticipantsChildren) {
                             Participant p = dsParticipantsChild.getValue(Participant.class);
                             if (p.getUid().equals(uid)) {
-                                dsParticipantsChild.getRef().removeValue();
-                                int participantCount = grp.getParticipantCount();
-                                participantCount--;
-                                dsGroupsChild.getRef().child("participantCount").setValue(participantCount);
+                                grp.removeParticipant(p.getUid());
+                                DatabaseReference drGroups = dsGroupsChild.getRef();
+                                drGroups.setValue(grp);
                                 Toast.makeText(mContext, "left study group: " + studyGroup.getGroupName(), Toast.LENGTH_SHORT).show();
                                 break;
                             }
