@@ -32,7 +32,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,11 +129,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     sendEmailVerification();
                     updateUI();
                     // add new user entry
-                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                    String uid = firebaseUser.getUid();
-                    String email = firebaseUser.getEmail();
-                    mDatabase = FirebaseDatabase.getInstance().getReference();
-                    mDatabase.child("users").child(uid).child("email").setValue(email);
                     FirebaseUser user = mAuth.getCurrentUser();
                     redirectToMainActivity(user);
                 } else {

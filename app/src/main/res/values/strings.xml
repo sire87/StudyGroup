@@ -59,11 +59,11 @@
 
     <!-- Strings related to editing the user profile -->
     <string name="profile_txt_user">User:</string>
-    <string name="profile_txt_email">email@email.example.com</string>
+    <string name="profile_txt_email">very.long.emailad@email.example.com</string>
     <string name="profile_txt_verified">verified</string>
     <string name="profile_txt_not_verified">NOT verified</string>
     <string name="profile_txt_please_verify">Please verify your email to use Study Group Manager.
-        Restart the app after you have clicked on the verification link we sent you.
+        Sign out and sign in again after you have clicked on the verification link we sent you.
         You may have to check your Spam folder.</string>
     <string name="profile_btn_sign_out">Sign out</string>
 

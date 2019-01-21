@@ -229,6 +229,8 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
             valid = false;
         }
 
+        // TODO check date fields
+
         return valid;
     }
 }

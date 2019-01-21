@@ -15,6 +15,7 @@ import java.util.Locale;
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     private EditText editText;
+    private String currentDateString;
 
     public void setEditText(EditText v) {
 
@@ -27,18 +28,26 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
         // use the current date as the default date in the picker
         final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
+        int currentYear = c.get(Calendar.YEAR);
+        int currentMonth = c.get(Calendar.MONTH);
+        int currentDay = c.get(Calendar.DAY_OF_MONTH);
+
+        this.currentDateString = String.format(Locale.ENGLISH, "%d-%02d-%02d", currentYear, currentMonth + 1, currentDay);
 
         // create a new instance of DatePickerDialog and return it
-        return new DatePickerDialog(getActivity(), this, year, month, day);
+        return new DatePickerDialog(getActivity(), this, currentYear, currentMonth, currentDay);
     }
 
     @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+    public void onDateSet(DatePicker view, int year, int month, int day) {
 
-        String dateString = String.format(Locale.ENGLISH, "%d-%02d-%02d", year, month + 1, dayOfMonth);
+        String dateString = String.format(Locale.ENGLISH, "%d-%02d-%02d", year, month + 1, day);
+
+        int comparison = dateString.compareTo(currentDateString);
+        if (comparison < 0) {
+            dateString = currentDateString;
+        }
+
         this.editText.setText(dateString);
 
         if (this.editText.getId() == R.id.edit_date_from) {
