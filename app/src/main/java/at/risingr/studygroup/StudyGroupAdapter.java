@@ -12,14 +12,10 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,7 +77,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
 
         hideDetails(viewHolder);
         setLightbulbs(viewHolder, studyGroup);
-        // setStars(viewHolder, studyGroup);
+        // setStars(viewHolder, studyGroup); // stars can be used instead of lightbulbs
         setParticipantsDetails(viewHolder, studyGroup);
 
         // display location map
@@ -118,14 +114,6 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
                 }
             });
         }
-
-        // TODO probably obsolete, delete if no longer needed
-        viewHolder.overflow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPopupMenu(viewHolder.overflow);
-            }
-        });
     }
 
     private void hideDetails(MyViewHolder viewHolder) {
@@ -170,7 +158,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
             }
             bulbs /= participants.size();
         }
-        if (bulbs < 2) {
+        if (bulbs < 1.5) {
             viewHolder.star1.setVisibility(View.INVISIBLE);
             viewHolder.star2.setVisibility(View.INVISIBLE);
             viewHolder.star3.setVisibility(View.INVISIBLE);
@@ -178,7 +166,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
             viewHolder.star5.setVisibility(View.INVISIBLE);
             return;
         }
-        if (bulbs < 3) {
+        if (bulbs < 2.5) {
             viewHolder.star1.setVisibility(View.VISIBLE);
             viewHolder.star2.setVisibility(View.INVISIBLE);
             viewHolder.star3.setVisibility(View.INVISIBLE);
@@ -186,7 +174,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
             viewHolder.star5.setVisibility(View.INVISIBLE);
             return;
         }
-        if (bulbs < 4) {
+        if (bulbs < 3.5) {
             viewHolder.star1.setVisibility(View.VISIBLE);
             viewHolder.star2.setVisibility(View.VISIBLE);
             viewHolder.star3.setVisibility(View.INVISIBLE);
@@ -194,7 +182,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
             viewHolder.star5.setVisibility(View.INVISIBLE);
             return;
         }
-        if (bulbs < 5) {
+        if (bulbs < 4.5) {
             viewHolder.star1.setVisibility(View.VISIBLE);
             viewHolder.star2.setVisibility(View.VISIBLE);
             viewHolder.star3.setVisibility(View.VISIBLE);
@@ -202,7 +190,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
             viewHolder.star5.setVisibility(View.INVISIBLE);
             return;
         }
-        if (bulbs < 6) {
+        if (bulbs < 5.5) {
             viewHolder.star1.setVisibility(View.VISIBLE);
             viewHolder.star2.setVisibility(View.VISIBLE);
             viewHolder.star3.setVisibility(View.VISIBLE);
@@ -217,6 +205,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
         }
     }
 
+    // stars can be used instead of lightbulbs
     private void setStars(MyViewHolder viewHolder, StudyGroup studyGroup) {
         int maxKnowledge = 6;
         ArrayList<Participant> participants = studyGroup.getParticipants();
@@ -319,26 +308,13 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
         return lineBreaks;
     }
 
-    // TODO can be deleted if menu is not used
-    private void showPopupMenu(View view) {
-        PopupMenu popupMenu = new PopupMenu(mContext, view);
-        MenuInflater inflater = popupMenu.getMenuInflater();
-        inflater.inflate(R.menu.menu_group, popupMenu.getMenu());
-
-        ViewParent viewParent = view.getParent();
-        View parentView = (View) viewParent;
-
-        popupMenu.setOnMenuItemClickListener(new MyMenuItemClickListener(parentView));
-        popupMenu.show();
-    }
-
     @Override
     public int getItemCount() {
         return studyGroups.size();
     }
 
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
+    public void onDialogLeaveClick(DialogFragment dialog) {
         final StudyGroup studyGroup = ((LeaveGroupDialogFragment) dialog).studyGroup;
         Toast.makeText(mContext, "positive click", Toast.LENGTH_SHORT).show();
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
@@ -359,7 +335,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
                                 int participantCount = grp.getParticipantCount();
                                 participantCount--;
                                 dsGroupsChild.getRef().child("participantCount").setValue(participantCount);
-                                Toast.makeText(mContext, "left study group", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext, "left study group: " + studyGroup.getGroupName(), Toast.LENGTH_SHORT).show();
                                 break;
                             }
                         }
@@ -376,7 +352,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
     }
 
     @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
+    public void onDialogLeaveCancelClick(DialogFragment dialog) {
     }
 
     @Override
@@ -400,7 +376,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
                         grp.addParticipant(p);
                         DatabaseReference drGroups = dsGroupsChild.getRef();
                         drGroups.setValue(grp);
-                        Toast.makeText(mContext, "joined study group", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "joined study group: " + studyGroup.getGroupName(), Toast.LENGTH_SHORT).show();
                         break;
                     }
                 }
@@ -414,9 +390,8 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
     }
 
     @Override
-    public void onDialogCancelClick(DialogFragment dialog) {
-        Toast.makeText(mContext, "cancel click", Toast.LENGTH_SHORT).show();
-        // TODO
+    public void onDialogJoinCancelClick(DialogFragment dialog) {
+
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -445,8 +420,6 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
 
         public Button grpJoinBtn;
 
-        public ImageView overflow;
-
         public MyViewHolder(View view) {
             super(view);
 
@@ -474,8 +447,6 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
             star5 = (ImageView) view.findViewById(R.id.img_card_grp_star5);
 
             grpJoinBtn = (Button) view.findViewById(R.id.btn_card_grp_join);
-
-            overflow = (ImageView) view.findViewById(R.id.img_card_grp_menu);
         }
     }
 
@@ -494,7 +465,6 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
                 view.findViewById(R.id.img_card_grp_participants2).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.txt_card_grp_participants_details).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.divider_card_participants2).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.divider_card_participants2).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.btn_card_grp_join).setVisibility(View.VISIBLE);
             } else {
                 view.findViewById(R.id.txt_card_grp_details).setVisibility(View.GONE);
@@ -509,57 +479,6 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
                 view.findViewById(R.id.divider_card_participants2).setVisibility(View.GONE);
                 view.findViewById(R.id.btn_card_grp_join).setVisibility(View.GONE);
             }
-        }
-    }
-
-    // TODO can be deleted if menu is not used, if kept remove duplicate code...
-    class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
-
-        private View view;
-
-        public MyMenuItemClickListener(View view) {
-            this.view = view;
-        }
-
-        @Override
-        public boolean onMenuItemClick(MenuItem item) {
-            switch (item.getItemId()) {
-
-                case R.id.action_show_details:
-                    int visibilityStatus = view.findViewById(R.id.txt_card_grp_details).getVisibility();
-                    if (visibilityStatus == View.GONE) {
-                        view.findViewById(R.id.txt_card_grp_details).setVisibility(View.VISIBLE);
-                        view.findViewById(R.id.img_card_grp_details).setVisibility(View.VISIBLE);
-                        view.findViewById(R.id.txt_card_grp_location).setVisibility(View.VISIBLE);
-                        view.findViewById(R.id.txt_card_grp_location_details).setVisibility(View.VISIBLE);
-                        view.findViewById(R.id.img_card_grp_location).setVisibility(View.VISIBLE);
-                        view.findViewById(R.id.img_location_map).setVisibility(View.VISIBLE);
-                        view.findViewById(R.id.divider_card_participants).setVisibility(View.VISIBLE);
-                        view.findViewById(R.id.img_card_grp_participants2).setVisibility(View.VISIBLE);
-                        view.findViewById(R.id.txt_card_grp_participants_details).setVisibility(View.VISIBLE);
-                        view.findViewById(R.id.divider_card_participants2).setVisibility(View.VISIBLE);
-                        view.findViewById(R.id.divider_card_participants2).setVisibility(View.VISIBLE);
-                        view.findViewById(R.id.btn_card_grp_join).setVisibility(View.VISIBLE);
-                    } else {
-                        view.findViewById(R.id.txt_card_grp_details).setVisibility(View.GONE);
-                        view.findViewById(R.id.img_card_grp_details).setVisibility(View.GONE);
-                        view.findViewById(R.id.txt_card_grp_location).setVisibility(View.GONE);
-                        view.findViewById(R.id.txt_card_grp_location_details).setVisibility(View.GONE);
-                        view.findViewById(R.id.img_card_grp_location).setVisibility(View.GONE);
-                        view.findViewById(R.id.img_location_map).setVisibility(View.GONE);
-                        view.findViewById(R.id.divider_card_participants).setVisibility(View.GONE);
-                        view.findViewById(R.id.img_card_grp_participants2).setVisibility(View.GONE);
-                        view.findViewById(R.id.txt_card_grp_participants_details).setVisibility(View.GONE);
-                        view.findViewById(R.id.divider_card_participants2).setVisibility(View.GONE);
-                        view.findViewById(R.id.btn_card_grp_join).setVisibility(View.GONE);
-                    }
-                    return true;
-
-                case R.id.action_join_group:
-                    Toast.makeText(mContext, "TODO: join group", Toast.LENGTH_SHORT).show();
-                    return true;
-            }
-            return false;
         }
     }
 

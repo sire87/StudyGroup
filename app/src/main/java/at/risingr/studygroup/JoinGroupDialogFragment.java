@@ -75,7 +75,7 @@ public class JoinGroupDialogFragment extends DialogFragment implements View.OnCl
             mListener.onDialogJoinClick(JoinGroupDialogFragment.this);
             getDialog().dismiss();
         } else if (id == R.id.btn_cancel_join) {
-            mListener.onDialogCancelClick(JoinGroupDialogFragment.this);
+            mListener.onDialogJoinCancelClick(JoinGroupDialogFragment.this);
             getDialog().dismiss();
         }
     }
@@ -83,6 +83,6 @@ public class JoinGroupDialogFragment extends DialogFragment implements View.OnCl
     public interface JoinGroupDialogListener {
         public void onDialogJoinClick(DialogFragment dialog);
 
-        public void onDialogCancelClick(DialogFragment dialog);
+        public void onDialogJoinCancelClick(DialogFragment dialog);
     }
 }

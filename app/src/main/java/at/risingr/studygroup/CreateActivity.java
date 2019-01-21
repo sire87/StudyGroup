@@ -229,7 +229,21 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
             valid = false;
         }
 
-        // TODO check date fields
+        String dateTo = editDateTo.getText().toString();
+        String dateFrom = editDateFrom.getText().toString();
+        int comparisonDate = dateTo.compareTo(dateFrom);
+        if (comparisonDate < 0) {
+            editDateTo.setError("Date to must not be before Date from.");
+            valid = false;
+        } else if (comparisonDate == 0) {
+            String timeTo = editTimeTo.getText().toString();
+            String timeFrom = editTimeFrom.getText().toString();
+            int comparisonTime = timeTo.compareTo(timeFrom);
+            if (comparisonTime < 0) {
+                editTimeTo.setError("Time to must not be before Time from.");
+                valid = false;
+            }
+        }
 
         return valid;
     }

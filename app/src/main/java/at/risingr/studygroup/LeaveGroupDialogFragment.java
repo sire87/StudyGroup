@@ -27,13 +27,13 @@ public class LeaveGroupDialogFragment extends DialogFragment {
         builder.setPositiveButton("Leave study group", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mListener.onDialogPositiveClick(LeaveGroupDialogFragment.this);
+                mListener.onDialogLeaveClick(LeaveGroupDialogFragment.this);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mListener.onDialogNegativeClick(LeaveGroupDialogFragment.this);
+                mListener.onDialogLeaveCancelClick(LeaveGroupDialogFragment.this);
             }
         });
         return builder.create();
@@ -48,7 +48,8 @@ public class LeaveGroupDialogFragment extends DialogFragment {
     }
 
     public interface LeaveGroupDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog);
-        public void onDialogNegativeClick(DialogFragment dialog);
+        public void onDialogLeaveClick(DialogFragment dialog);
+
+        public void onDialogLeaveCancelClick(DialogFragment dialog);
     }
 }

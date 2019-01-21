@@ -35,7 +35,9 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         this.currentDateString = String.format(Locale.ENGLISH, "%d-%02d-%02d", currentYear, currentMonth + 1, currentDay);
 
         // create a new instance of DatePickerDialog and return it
-        return new DatePickerDialog(getActivity(), this, currentYear, currentMonth, currentDay);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, currentYear, currentMonth, currentDay);
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000); // prevent picking past dates
+        return datePickerDialog;
     }
 
     @Override
@@ -53,6 +55,14 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         if (this.editText.getId() == R.id.edit_date_from) {
             EditText editText2 = getActivity().findViewById(R.id.edit_date_to);
             editText2.setText(dateString);
+        } else if (this.editText.getId() == R.id.edit_date_to) {
+            EditText editText2 = getActivity().findViewById(R.id.edit_date_from);
+            String dateFrom = editText2.getText().toString();
+            String dateTo = this.editText.getText().toString();
+            int comparisonDate = dateTo.compareTo(dateFrom);
+            if (comparisonDate < 0) {
+                editText2.setText(dateString);
+            }
         }
     }
 }
