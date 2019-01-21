@@ -11,13 +11,26 @@
         android:id="@+id/toolbar_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:elevation="2dp"
         android:tint="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar_main"
-        app:layout_constraintEnd_toEndOf="@+id/toolbar_main"
+        app:layout_constraintEnd_toStartOf="@+id/toolbar_help"
         app:layout_constraintTop_toTopOf="@+id/toolbar_main"
         app:srcCompat="@drawable/ic_sort_white_24dp" />
+
+    <ImageView
+        android:id="@+id/toolbar_help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar_main"
+        app:layout_constraintEnd_toEndOf="@+id/toolbar_main"
+        app:layout_constraintTop_toTopOf="@+id/toolbar_main"
+        app:srcCompat="@drawable/ic_help_outline_help_24dp" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_main"

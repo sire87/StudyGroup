@@ -141,7 +141,7 @@ public class StudyGroupAdapter extends RecyclerView.Adapter<StudyGroupAdapter.My
                 if (comment.equals("")) {
                     text += "\n\n" + name;
                 } else {
-                    text += "\n\n" + name + ":\n" + "\"" + comment + "\"";
+                    text += "\n\n" + name + ":\n" + "" + comment + "";
                 }
             }
         }

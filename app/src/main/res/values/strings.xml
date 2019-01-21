@@ -57,6 +57,19 @@
     <!-- Strings related to joining a new study group -->
     <string name="join_group_btn_join">Join study group</string>
 
+    <!-- String related to help -->
+    <string name="help_title">Help</string>
+    <string name="help_txt">My Study Groups:
+    \nHere you will find all the study you are participating in. Study groups are ordered by event date in ascending order.
+
+    \n\nSearch:
+    \nHere you will find all the study groups you are not yet participating in.
+
+    \n\nProfile:
+    \nHere you can check your e-mail address and sign out of the app.
+
+    </string>
+
     <!-- Strings related to editing the user profile -->
     <string name="profile_txt_user">User:</string>
     <string name="profile_txt_email">very.long.emailad@email.example.com</string>

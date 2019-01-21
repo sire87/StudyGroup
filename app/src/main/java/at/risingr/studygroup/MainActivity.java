@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -70,6 +71,16 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         eMailVerified = user.isEmailVerified();
+
+        // help menu functionality
+        ((ImageView) findViewById(R.id.toolbar_help)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HelpDialogFragment helpDialogFragment = new HelpDialogFragment();
+                FragmentManager fm = getSupportFragmentManager();
+                helpDialogFragment.show(fm, "Help Dialog Fragment");
+            }
+        });
 
         // load default content fragment
         if (eMailVerified) {
