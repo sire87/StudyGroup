@@ -227,17 +227,19 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     }
 
     private boolean checkString(StudyGroup studyGroup, String string) {
-        if (studyGroup.getGroupName().contains(string)) {
+        String sLowerCase = string.toLowerCase();
+
+        if (studyGroup.getGroupName().toLowerCase().contains(sLowerCase)) {
             return true;
-        } else if (studyGroup.getGroupDetails().contains(string)) {
+        } else if (studyGroup.getGroupDetails().toLowerCase().contains(sLowerCase)) {
             return true;
-        } else if (studyGroup.getLocation().contains(string)) {
+        } else if (studyGroup.getLocation().toLowerCase().contains(sLowerCase)) {
             return true;
-        } else if (studyGroup.getLocationDetail().contains(string)) {
+        } else if (studyGroup.getLocationDetail().toLowerCase().contains(sLowerCase)) {
             return true;
-        } else if (studyGroup.getDateFrom().contains(string)) {
+        } else if (studyGroup.getDateFrom().toLowerCase().contains(sLowerCase)) {
             return true;
-        } else if (studyGroup.getDateTo().contains(string)) {
+        } else if (studyGroup.getDateTo().toLowerCase().contains(sLowerCase)) {
             return true;
         }
         return false;

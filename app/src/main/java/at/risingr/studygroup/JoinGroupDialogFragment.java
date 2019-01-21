@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
@@ -44,8 +43,6 @@ public class JoinGroupDialogFragment extends DialogFragment implements View.OnCl
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.FILL_PARENT);
-        getDialog().setTitle("Join study group");
 
         Toolbar mToolbar = (Toolbar) view.findViewById(R.id.toolbar_join);
         mToolbar.setTitle(studyGroup.getGroupName());
