@@ -69,7 +69,7 @@
         keyword in the text field and clicking the apply button. To delete the filter click the
         clear button. Study groups with an event date in the past will be filtered out. Click on a
         study group to get more details and to join it.</string>
-    <string name="help_section_profile">Here you can view your e-mail address which servers as user
+    <string name="help_section_profile">Here you can view your e-mail address which serves as user
         name. You can sign out of the app here.</string>
     <string name="help_icon_participants">current participants / max. participants of study group</string>
     <string name="help_icon_knowledge">average knowledge of study group participants, more
